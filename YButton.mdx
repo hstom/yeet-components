@@ -4,6 +4,8 @@ name: YButton
 
 import { Playground } from 'docz';
 import YButton from './src/YBasic/YButton/YButton.js';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YButton/YButton.js'
 
 # YButton
 
@@ -14,3 +16,6 @@ import YButton from './src/YBasic/YButton/YButton.js';
 <Playground>
 	<YButton onClick={()=>alert('Ouch!')}>I do!</YButton>
 </Playground>
+
+# Source
+<SourceDisplay source={source} />

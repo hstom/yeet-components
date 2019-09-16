@@ -6,6 +6,8 @@ import { Playground } from 'docz';
 import YModal from './src/YBasic/YModal/YModal.js';
 import YButton from './src/YBasic/YButton/YButton.js';
 import { State, Observe } from "mdx-observable";
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YButton/YButton.js'
 
 # YModal
 ---
@@ -65,3 +67,6 @@ import { State, Observe } from "mdx-observable";
 			}}>More like resolute!</YModal>
 	</div>
 </Playground>
+
+# Source
+<SourceDisplay source={source} />
