@@ -1,0 +1,67 @@
+---
+name: YModal
+---
+
+import { Playground } from 'docz';
+import YModal from './src/YBasic/YModal/YModal.js';
+import YButton from './src/YBasic/YButton/YButton.js';
+import { State, Observe } from "mdx-observable";
+
+# YModal
+---
+
+## position: fixed (default)
+<Playground>
+<State initialState={{ count: false }}>
+<Observe>
+{({ count, setState }) => (
+	<>
+		<button onClick={() => setState(s => ({ count: true }))}>
+		Click me
+		</button>
+		{count && <YModal>Hello, I am a basic modal, close me with <YButton onClick={() => setState(s => ({count: false}))}>this button</YButton></YModal>}
+	</>
+) }
+</Observe>
+</State>
+</Playground>
+
+
+## position: fixed (default) with height overflow
+<Playground>
+<State initialState={{ count: false }}>
+<Observe>
+{({ count, setState }) => (
+	<>
+		<button onClick={() => setState(s => ({ count: true }))}>
+		Click me
+		</button>
+		{count && <YModal>
+			Hello, I am a basic modal,
+			<div>
+				{Array(100).fill().map(i => <span key={'key'+i}>and I'm just way too verbose</span>)}
+			</div>
+			{Array(100).fill().map(i => <div key={'key'+i}>and I'm just way too verbose</div>)}
+			, close me with
+			
+			<YButton onClick={() => setState(s => ({count: false}))}>this button</YButton></YModal>}
+	</>
+) }
+</Observe>
+</State>
+</Playground>
+
+## position: absolute
+<Playground>
+	<div style={{position: 'relative', height: '400px'}}>
+		<YModal style={{
+			position: 'absolute',
+			top: '50%',
+			left: 0,
+			right: 0,
+			transform: 'translateY(-50%)',
+			margin: 'auto',
+			zIndex: 'undefined'
+			}}>More like resolute!</YModal>
+	</div>
+</Playground>

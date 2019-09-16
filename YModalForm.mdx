@@ -1,0 +1,34 @@
+---
+name: YModalForm
+---
+
+import { Playground, Props } from 'docz';
+import YModal from './src/YBasic/YModal/YModal.js';
+import YButton from './src/YBasic/YButton/YButton.js';
+import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+import { State, Observe } from "mdx-observable";
+
+# YModalForm
+---
+<Playground>
+<State initialState={{ count: false }}>
+<Observe>
+{({ count, setState }) => (
+	<>
+		<button onClick={() => setState(s => ({ count: true }))}>
+		Click me
+		</button>
+		{count &&
+			<YModalForm
+				title='Modal Title'
+				submitAction={() => setState(s => ({count: false}))}
+				cancelAction={() => setState(s => ({count: false}))}
+			>
+				Hello, I am a basic modal, close me with the standard button!
+			</YModalForm>
+		}
+	</>
+) }
+</Observe>
+</State>
+</Playground>
