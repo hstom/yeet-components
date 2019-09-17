@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "docz dev"
+    "start": "docz dev",
+    "build": "docz build"
   },
   "author": "",
   "license": "MIT",

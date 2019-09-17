@@ -4,10 +4,8 @@ import './RedThemedYComponents.css';
 const themedComponents = ThemableYComponents({
     YButton: {
         defaultClassName: 'red'
-
     }
 });
-window.themedComponents = themedComponents;
 export const YButtonPrimary = themedComponents.YBasic.YButton.YButtonPrimary
 export const YModalForm = themedComponents.YFancy.YModalForm;
 

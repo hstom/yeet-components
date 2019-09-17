@@ -70,5 +70,4 @@ export const ThemableYModalForm = (globalTheme = {}) => {
 }
 
 export const YModalForm = ThemableYModalForm();
-window.ThemableYModalForm = ThemableYModalForm;
 export default YModalForm;
