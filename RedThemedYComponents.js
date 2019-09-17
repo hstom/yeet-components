@@ -1,10 +1,10 @@
 import {ThemableYComponents} from './src/YComponents.js';
+import './RedThemedYComponents.css';
 
 const themedComponents = ThemableYComponents({
     YButton: {
-        defaultStyle: {
-            backgroundColor: 'red'
-        }
+        defaultClassName: 'red'
+
     }
 });
 window.themedComponents = themedComponents;

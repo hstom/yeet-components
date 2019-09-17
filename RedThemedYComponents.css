@@ -1,0 +1,20 @@
+.y.y-button.primary.red {
+	border: 1px solid black;
+	background-color: #d00c0c;
+	color: #ffffff;
+}
+
+.y.y-button.primary.red:hover {
+	background-color: #db2d2d;
+}
+
+.y.y-button.secondary.red {
+    background-color: #ffffff;
+	color: #d00c0c;
+	border: 1px solid #d00c0c;
+}
+
+.y.y-button.secondary.red:hover {
+	background-color: #effaff;
+	color: #af0000;
+}
