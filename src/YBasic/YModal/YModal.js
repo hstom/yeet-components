@@ -1,40 +1,58 @@
 import React from 'react';
+import { catClassName } from '../../util.js';
+import './YModal.css';
 
-const defaultStyle = {
-    // display: 'none',
-    position: 'fixed',
-    zIndex: 999,
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    backgroundColor: 'rgb(0,0,0,.4)',
-};
+const YModalDefaultClassName = 'y y-modal';
+const YModalDefaultChildClassName = 'y y-modal-content'
 
-const defaultChildStyle = {
-    backgroundColor: 'white',
-    margin: 'auto',
-    padding: '20px',
-    border: '1px solid #888',
-    borderRadius: '5px',
-    width: '80%',
-    color: 'black',
-    maxHeight: '80%',
-    position: 'absolute',
-    top: '50%',
-    left: 0,
-    right: 0,
-    transform: 'translateY(-50%)',
-    overflowY: 'auto'
+export const ThemableYModal = (globalTheme = {}) => {
+    const componentTheme = (globalTheme.YModal) || {}; 
+
+    const {
+        defaultStyle={},
+        defaultChildStyle={}, 
+        defaultClassName='',
+        defaultChildClassName='',
+        excludeComponentDefaultClassName=false,
+        excludeComponentDefaultChildClassName=false
+    } = componentTheme;
+
+    return ({
+        style = {},
+        childStyle = {},
+        
+        className: propClassName,
+        childClassName: propChildClassName,
+        
+        children,
+        
+        ...props
+    }) => {
+        return (
+            <div
+                className={catClassName(
+                    (excludeComponentDefaultClassName ? '' : YModalDefaultClassName),
+                    defaultClassName,
+                    propClassName
+                )}
+                style={Object.assign({}, defaultStyle, style)}
+                {...props}
+            >
+                <div
+                    className={catClassName(
+                        (excludeComponentDefaultChildClassName ? '' : YModalDefaultChildClassName),
+                        defaultChildClassName,
+                        propChildClassName
+                    )}
+                    style={Object.assign({}, defaultChildStyle, childStyle)}
+                >
+                    {children}
+                </div>
+            </div>
+        );
+    }
+    
 }
 
-export default ({style = {}, childStyle = {}, children, ...props}) => {
-    const patchedStyle = Object.assign({}, defaultStyle, style);
-    const patchedChildStyle = Object.assign({}, defaultChildStyle, style);
-    return (<div style={patchedStyle} {...props}>
-        <div style={patchedChildStyle}>
-            {children}
-        </div>
-    </div>);
-}
+const YModal = ThemableYModal();
+export default YModal;

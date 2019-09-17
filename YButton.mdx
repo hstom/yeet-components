@@ -1,20 +1,25 @@
 ---
 name: YButton
+menu: YBasic
 ---
 
 import { Playground } from 'docz';
-import YButton from './src/YBasic/YButton/YButton.js';
+import {YButtonPrimary, YButtonSecondary} from './src/YBasic/YButton/YButton.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YBasic/YButton/YButton.js'
 
 # YButton
 
 <Playground>
-	<YButton>I am a button, I have no onClick</YButton>
+	<YButtonPrimary>I am a button, I have no onClick</YButtonPrimary>
 </Playground>
 
 <Playground>
-	<YButton onClick={()=>alert('Ouch!')}>I do!</YButton>
+	<YButtonPrimary onClick={()=>alert('Ouch!')}>I do!</YButtonPrimary>
+</Playground>
+
+<Playground>
+	<YButtonSecondary onClick={()=>alert('Ouch!')}>I'm also a secondary button!</YButtonSecondary>
 </Playground>
 
 # Source

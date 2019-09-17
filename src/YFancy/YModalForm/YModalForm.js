@@ -1,46 +1,74 @@
 import React from 'react';
-import YModal from '../../YBasic/YModal/YModal.js';
-import YButton from '../../YBasic/YButton/YButton.js';
+import {ThemableYModal} from '../../YBasic/YModal/YModal.js';
+import {ThemableYButton} from '../../YBasic/YButton/YButton.js';
+import {catClassName} from '../../util.js';
+import './YModalForm.css';
 
-export const DefaultHeader = ({title}) => 
-    <div style={Object.assign({}, defaultRegionStyles, defaultBottomBorder)}>
-        {title}
-    </div>;
-export const DefaultFooter = ({submitAction, cancelAction}) =>
-    <div style={defaultRegionStyles}>
-        <YButton onClick={cancelAction}>Cancel</YButton>
-        <YButton onClick={submitAction}>Submit</YButton>
-    </div>;
+export const ThemableYModalForm = (globalTheme = {}) => {
+    const componentTheme = ((globalTheme.YFancy ||{}).YModalForm) || {}; 
 
-const defaultModalStyleOverrides = {
-    padding: '15px 0'
-};
+    const {
+        overrideHeaderComponent: themeHeaderComponent,
+        overrideFooterComponent: themeFooterComponent
+    } = componentTheme;
 
-const defaultBottomBorder = {
-    borderBottom: '4px solid rgba(0, 0, 0, .3)'
+    const YModal = ThemableYModal(globalTheme);
+    const { YButtonPrimary, YButtonSecondary} = ThemableYButton(globalTheme);
+
+    const DefaultHeader = ({title}) => 
+        <div
+            className='y y-modal-form y-modal-form-region y-modal-form-header'
+        >
+            {title}
+        </div>;
+
+    const DefaultFooter = ({submitAction, cancelAction}) =>
+        <div
+            className='y y-modal-form y-modal-form-region y-modal-form-footer'
+        >
+            <YButtonSecondary onClick={cancelAction}>Cancel</YButtonSecondary>
+            <YButtonPrimary onClick={submitAction}>Submit</YButtonPrimary>
+        </div>;
+
+    return ({
+        style = {},
+        childStyle = {},
+        
+        className,
+        childClassName,
+        wrapperClassName,
+
+        overrideHeaderComponent,
+        overrideFooterComponent,
+        
+        title,
+        children,
+        submitAction,
+        cancelAction,
+        
+        ...props
+    }) => {
+
+        const HeaderComponent = overrideHeaderComponent || themeHeaderComponent || DefaultHeader;
+        const FooterComponent = overrideFooterComponent || themeFooterComponent || DefaultFooter;
+
+        return (
+            <YModal
+                className={catClassName('y y-modal-form y-modal-form', className)}
+                childClassName={catClassName('y y-modal-form y-modal-form-wrapper', wrapperClassName)}
+                {...props}
+            >
+                <HeaderComponent title={title} />
+                <div className={catClassName('y y-modal-form y-modal-form-region', childClassName)}>
+                    {children}
+                </div>
+                <FooterComponent submitAction={submitAction} cancelAction={cancelAction} />
+            </YModal>
+        );
+    }
+    
 }
 
-const defaultRegionStyles = {
-    padding: '0 15px'
-};
-
-const YModalForm = ({
-    Header=DefaultHeader,
-    Footer=DefaultFooter,
-    title,
-    children,
-    submitAction,
-    cancelAction,
-    style,
-    ...props
-    }) => {
-        const patchedStyle = Object.assign({}, defaultModalStyleOverrides, style);
-        return (<YModal style={patchedStyle} {...props}>
-    <Header title={title}/>
-    <div style={Object.assign({}, defaultRegionStyles, defaultBottomBorder)}>
-        {children}
-    </div>
-    <Footer submitAction={submitAction} cancelAction={cancelAction}/>
-</YModal>);}
-
+export const YModalForm = ThemableYModalForm();
+window.ThemableYModalForm = ThemableYModalForm;
 export default YModalForm;

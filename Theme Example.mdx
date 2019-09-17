@@ -1,17 +1,21 @@
 ---
-name: YModalForm
-menu: YFancy
+name: Theme Example
+menu: Theming
 ---
 
-import { Playground, Props } from 'docz';
+import { Playground } from 'docz';
 import { State, Observe } from "mdx-observable";
-import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
-
+import YModal from './src/YBasic/YModal/YModal.js';
 import SourceDisplay from './SourceDisplay';
-import source from '!!raw-loader!./src/YFancy/YModalForm/YModalForm.js';
+import source from '!!raw-loader!./RedThemedYComponents.js'
+import { YButtonPrimary, YModalForm } from './RedThemedYComponents';
 
-# YModalForm
----
+# Themed YButtonPrimary
+
+<YButtonPrimary> i am red</YButtonPrimary>
+
+# Themed YModalForm
+
 <Playground>
 <State initialState={{ count: false }}>
 <Observe>

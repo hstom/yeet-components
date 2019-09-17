@@ -1,0 +1,15 @@
+.y.y-modal-form-wrapper {
+    padding: 15px 0;
+};
+
+.y.y-modal-form-region {
+    padding: 0 15px;
+}
+
+.y.y-modal-form-region {
+    padding: 0 15px;
+}
+
+.y.y-modal-form-region:not(:last-child) {
+    border-bottom: 4px solid rgba(0,0,0,.3);
+}

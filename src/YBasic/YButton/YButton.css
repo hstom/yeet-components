@@ -1,0 +1,28 @@
+.y.y-button {
+    border-radius: 4px;
+	padding: 0 15px;
+	line-height: 1.5;
+	font-size: 14px;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.y.y-button.primary {
+	border: 1px solid black;
+	background-color: #0ca2d0;
+	color: #ffffff;
+}
+
+.y.y-button.primary:hover {
+	background-color: #2db3db;
+}
+
+.y.y-button.secondary {
+    background-color: #ffffff;
+	color: #0ca2d0;
+	border: 1px solid #0ca2d0;
+}
+
+.y.y-button.secondary:hover {
+	background-color: #effaff;
+	color: #0086af;
+}

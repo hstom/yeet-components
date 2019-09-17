@@ -1,31 +1,46 @@
 import React from 'react';
+import {catClassName} from '../../util.js';
+import './YButton.css';
 
-const YButtonGenerator = defaultStyle => ({style = defaultStyle, children, ...props}) => {
-	const patchedStyle = Object.assign({}, defaultStyle, style);
-	return (<button style={patchedStyle} {...props}>{children}</button>);
+const YButtonDefaultClassName = 'y y-button';
+
+const themableYButtonGenerator = (globalTheme = {}) => {
+	const componentTheme = (globalTheme.YButton) || {};
+
+	const {
+		defaultStyle={},
+		defaultClassName='',
+		excludeComponentDefaultClassName=false
+	} = componentTheme;
+
+	return ({typeClassName}) => ({style = defaultStyle, className: propClassName, children, ...props}) => {
+		return (
+			<button
+				style={Object.assign({}, defaultStyle, style)}
+				className={catClassName(
+					(excludeComponentDefaultClassName ? '' : YButtonDefaultClassName),
+					defaultClassName,
+					typeClassName,
+					propClassName
+				)}
+				{...props}
+			>
+				{children}
+			</button>
+		);
+	}
 }
 
-const basicStyle = {
-	borderRadius: '4px',
-	padding: '0 15px',
-	lineHeight: '1.5',
-	fontSize: '14px',
-	transition: 'border-color 0.15s ease, background-color 0.15s ease',
-}
 
-const primaryStyle = {
-	border: '1px solid black',
-	backgroundColor: '#0ca2d0',
-	color: '#ffffff'
+export const YButtonPrimary = themableYButtonGenerator()({typeClassName: 'primary'})
+export const YButtonSecondary = themableYButtonGenerator()({typeClassName: 'secondary'});
+
+export const ThemableYButton = globalTheme => ({
+	YButtonPrimary: themableYButtonGenerator(globalTheme)({typeClassName: 'primary'}),
+	YButtonSecondary: themableYButtonGenerator(globalTheme)({typeClassName: 'secondary'})
+});
+
+export default {
+	YButtonPrimary,
+	YButtonSecondary
 };
-
-const secondaryStyle = {
-	backgroundColor: '#ffffff',
-	color: '#0ca2d0',
-	border: '1px solid #0ca2d0'
-}
-
-export const Primary = YButtonGenerator(Object.assign({}, basicStyle, primaryStyle));
-export const Secondary = YButtonGenerator(Object.assign({}, basicStyle, secondaryStyle));
-
-export default Primary;
