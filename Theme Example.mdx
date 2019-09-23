@@ -8,6 +8,7 @@ import { State, Observe } from "mdx-observable";
 import YModal from './src/YBasic/YModal/YModal.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./RedThemedYComponents.js'
+import sourceCSS from '!!raw-loader!./RedThemedYComponents.css'
 import { YButtonPrimary, YModalForm } from './RedThemedYComponents';
 
 # Themed YButtonPrimary
@@ -41,3 +42,6 @@ import { YButtonPrimary, YModalForm } from './RedThemedYComponents';
 
 # Source
 <SourceDisplay source={source} />
+
+# Source (css)
+<SourceDisplay source={sourceCSS} />

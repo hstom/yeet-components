@@ -1,0 +1,17 @@
+---
+name: util.js
+menu: util
+---
+
+import { Playground } from 'docz';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/util.js'
+
+# util.js
+to avoid non react dependencies, these are just in a little util file
+
+## catClassName
+split arbitrary number of className strings on space, dedupe, space join
+
+# Source
+<SourceDisplay source={source} />
