@@ -7,6 +7,7 @@ menu: Docs
 import { State, Observe } from "mdx-observable";
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+import YModal from './src/YBasic/YModal/YModal.js';
 import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
 
 # UI Library for iconoclasts
@@ -18,14 +19,14 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
 		<YTable>
         <YTHead>
             <YTr>
-                <YTh>
+                <YTh style={{width: '25%'}}>
                     Col A
                     <YThSortIndicator />
                 </YTh>
-                <YTh>
+                <YTh style={{width: '25%'}}>
                     Col B
                 </YTh>
-                <YTh>
+                <YTh style={{width: '25%'}}>
                     Col C
                     <YThSortIndicator className='asc' />
                 </YTh>
@@ -52,8 +53,19 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
                         }
                 </YTd>
                 <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
-            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
-            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd colSpan={2} rowSpan={2} style={{position: 'relative'}}>
+                <YModal
+                    style={{
+                        position: 'absolute',
+                        zIndex: 'unset',
+                        whiteSpace: 'normal'
+                        }}
+                    childStyle={{
+                        padding: '5px 15px'
+                    }}
+                >I don't know why you'd want a partial page modal to take up four table cells, but here you go!</YModal>
+                </YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
             
         </YTBody>
