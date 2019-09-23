@@ -7,6 +7,7 @@ menu: Docs
 import { State, Observe } from "mdx-observable";
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
 
 # UI Library for iconoclasts
 
@@ -14,18 +15,49 @@ import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
 <Observe>
 {({ count, setState }) => (
 	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		YModalForm example spawned from YButton
-		</YButtonPrimary>
-		{count &&
-			<YModalForm
-				title='Modal Title'
-				submitAction={() => setState(s => ({count: false}))}
-				cancelAction={() => setState(s => ({count: false}))}
-			>
-				Hello, I am a basic modal, close me with the standard button!
-			</YModalForm>
-		}
+		<YTable>
+        <YTHead>
+            <YTr>
+                <YTh>
+                    Col A
+                    <YThSortIndicator />
+                </YTh>
+                <YTh>
+                    Col B
+                </YTh>
+                <YTh>
+                    Col C
+                    <YThSortIndicator className='asc' />
+                </YTh>
+                <YTh>
+                    Col D
+                    <YThSortIndicator className='desc' />
+                </YTh>
+            </YTr>
+        </YTHead>
+        <YTBody>
+            <YTr>
+                <YTd>
+                    <YButtonPrimary style={{width: '100%'}} onClick={() => setState(s => ({ count: true }))}>
+                        YModalForm example spawned from YButton
+                        </YButtonPrimary>
+                        {count &&
+                            <YModalForm
+                                title='Modal Title'
+                                submitAction={() => setState(s => ({count: false}))}
+                                cancelAction={() => setState(s => ({count: false}))}
+                            >
+                                Hello, I am a basic modal, close me with the standard button!
+                            </YModalForm>
+                        }
+                </YTd>
+                <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            
+        </YTBody>
+    </YTable>
 	</>
 ) }
 </Observe>
