@@ -10,6 +10,8 @@ import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
 
 # YTableComponents
 
+last th being resizable is a bit weird, toggle off with resize={false}
+
 <Playground>
 	<YTable>
         <YTHead>
@@ -25,7 +27,7 @@ import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
                     Col C
                     <YThSortIndicator className='asc' />
                 </YTh>
-                <YTh>
+                <YTh resizable={false}>
                     Col D
                     <YThSortIndicator className='desc' />
                 </YTh>

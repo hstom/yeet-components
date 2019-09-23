@@ -1,6 +1,7 @@
 .y.y-table {
     border-collapse: collapse;
     min-width: 100%;
+    table-layout: fixed;
 }
 
 .y.y-th,
@@ -22,7 +23,7 @@
     color: white;
 }
 
-.y.y-th:not(:last-child) {
+.y.y-th.resizable{
     resize: horizontal;
 }
 

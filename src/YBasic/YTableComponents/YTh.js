@@ -21,7 +21,7 @@ export const ThemableYTh = (globalTheme = {}) => {
                 childClassName: propChildClassName,
 
                 children,
-
+                resizable = true,
                 ...props
             } = this.props;
 
@@ -30,6 +30,7 @@ export const ThemableYTh = (globalTheme = {}) => {
                     className={catClassName(
                         (excludeComponentDefaultClassName ? '' : YThDefaultClassName),
                         defaultClassName,
+                        resizable ? 'resizable' : '',
                         propClassName
                     )}
                     style={Object.assign({}, defaultStyle, style)}
