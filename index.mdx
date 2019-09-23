@@ -4,4 +4,29 @@ route: /
 menu: Docs
 ---
 
+import { State, Observe } from "mdx-observable";
+import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
+import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+
 # UI Library for iconoclasts
+
+<State initialState={{ count: false }}>
+<Observe>
+{({ count, setState }) => (
+	<>
+		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
+		YModalForm example spawned from YButton
+		</YButtonPrimary>
+		{count &&
+			<YModalForm
+				title='Modal Title'
+				submitAction={() => setState(s => ({count: false}))}
+				cancelAction={() => setState(s => ({count: false}))}
+			>
+				Hello, I am a basic modal, close me with the standard button!
+			</YModalForm>
+		}
+	</>
+) }
+</Observe>
+</State>

@@ -6,7 +6,6 @@ const YModalDefaultClassName = 'y y-modal';
 const YModalDefaultChildClassName = 'y y-modal-content'
 
 export const ThemableYModal = (globalTheme = {}) => {
-    const componentTheme = (globalTheme.YModal) || {}; 
 
     const {
         defaultStyle={},
@@ -15,7 +14,7 @@ export const ThemableYModal = (globalTheme = {}) => {
         defaultChildClassName='',
         excludeComponentDefaultClassName=false,
         excludeComponentDefaultChildClassName=false
-    } = componentTheme;
+    } = ((globalTheme.YBasic || {}).YTable || {});
 
     return ({
         style = {},

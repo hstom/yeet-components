@@ -5,13 +5,11 @@ import './YButton.css';
 const YButtonDefaultClassName = 'y y-button';
 
 const themableYButtonGenerator = (globalTheme = {}) => {
-	const componentTheme = (globalTheme.YButton) || {};
-
 	const {
 		defaultStyle={},
 		defaultClassName='',
 		excludeComponentDefaultClassName=false
-	} = componentTheme;
+	} = (((globalTheme.YBasic || {}).YButton) || {});
 
 	return ({typeClassName}) => ({style = defaultStyle, className: propClassName, children, ...props}) => {
 		return (
@@ -31,16 +29,18 @@ const themableYButtonGenerator = (globalTheme = {}) => {
 	}
 }
 
-
+export const YButton = themableYButtonGenerator()({typeClassName: ''});
 export const YButtonPrimary = themableYButtonGenerator()({typeClassName: 'primary'})
 export const YButtonSecondary = themableYButtonGenerator()({typeClassName: 'secondary'});
 
 export const ThemableYButton = globalTheme => ({
+	YButton: themableYButtonGenerator(globalTheme)({typeClassName: ''}),
 	YButtonPrimary: themableYButtonGenerator(globalTheme)({typeClassName: 'primary'}),
 	YButtonSecondary: themableYButtonGenerator(globalTheme)({typeClassName: 'secondary'})
 });
 
 export default {
 	YButtonPrimary,
-	YButtonSecondary
+	YButtonSecondary,
+	YButton
 };

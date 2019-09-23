@@ -18,3 +18,27 @@
 	background-color: #ffefef;
 	color: #af0000;
 }
+
+.y.y-th.red,
+.y.y-td.red {
+    border: 1px solid #ff0000;
+}
+
+.y.y-th.red {
+    background: #e06c6c;
+    color: rgb(0, 0, 0);
+}
+
+
+.y.y-td.red {
+	color: #ac2323;
+	background: #ffffff;
+}
+
+.y.y-tr.red:nth-child(even) td {
+    background: #f5e7e7;
+}
+
+.y.y-th-sort-indicator.red {
+    filter: invert(0%);
+}

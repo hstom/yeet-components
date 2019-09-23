@@ -1,0 +1,45 @@
+---
+name: YTableComponents
+menu: YBasic
+---
+
+import { Playground } from 'docz';
+import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
+
+# YTableComponents
+
+<Playground>
+	<YTable>
+        <YTHead>
+            <YTr>
+                <YTh>
+                    Col A
+                    <YThSortIndicator />
+                </YTh>
+                <YTh>
+                    Col B
+                </YTh>
+                <YTh>
+                    Col C
+                    <YThSortIndicator className='asc' />
+                </YTh>
+                <YTh>
+                    Col D
+                    <YThSortIndicator className='desc' />
+                </YTh>
+            </YTr>
+        </YTHead>
+        <YTBody>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            
+        </YTBody>
+    </YTable>
+</Playground>
+
+# Source
+<SourceDisplay source={source} />

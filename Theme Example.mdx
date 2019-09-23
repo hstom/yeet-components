@@ -5,11 +5,10 @@ menu: Theming
 
 import { Playground } from 'docz';
 import { State, Observe } from "mdx-observable";
-import YModal from './src/YBasic/YModal/YModal.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./RedThemedYComponents.js'
 import sourceCSS from '!!raw-loader!./RedThemedYComponents.css'
-import { YButtonPrimary, YModalForm } from './RedThemedYComponents';
+import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './RedThemedYComponents';
 
 # Themed YButtonPrimary
 
@@ -38,6 +37,20 @@ import { YButtonPrimary, YModalForm } from './RedThemedYComponents';
 ) }
 </Observe>
 </State>
+</Playground>
+
+<Playground>
+<YTable>
+	<YThead><YTr>
+		<YTh style={{width: '80%'}}>A<YThSortIndicator /></YTh>
+		<YTh>B</YTh>
+		<YTh>C<YThSortIndicator className='asc' /></YTh>
+	</YTr></YThead>
+	<YTbody>
+		<YTr><YTd>red</YTd><YTd>is a</YTd><YTd>color</YTd></YTr>
+		<YTr><YTd>that</YTd><YTd>could describe</YTd><YTd>this table</YTd></YTr>
+	</YTbody>
+</YTable>
 </Playground>
 
 # Source
