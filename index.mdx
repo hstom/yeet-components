@@ -29,7 +29,7 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
                     Col C
                     <YThSortIndicator className='asc' />
                 </YTh>
-                <YTh>
+                <YTh resizable={false}>
                     Col D
                     <YThSortIndicator className='desc' />
                 </YTh>
@@ -62,3 +62,11 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
 ) }
 </Observe>
 </State>
+
+### YBasic
+These are "basic" components that do not depend on any other component.
+
+MAX_ALLOWED_LINES = 80; (this is a tight limit especially considering about 25 lines goes to theming)
+
+### YFancy
+These are "complex" components that incorporate other components.

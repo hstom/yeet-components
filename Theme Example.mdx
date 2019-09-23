@@ -9,10 +9,17 @@ import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./RedThemedYComponents.js'
 import sourceCSS from '!!raw-loader!./RedThemedYComponents.css'
 import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './RedThemedYComponents';
+import {YButtonPrimary as UnThemedYButtonPrimary} from './src/YBasic/YButton/YButton.js';
 
 # Themed YButtonPrimary
 
 <YButtonPrimary> i am red</YButtonPrimary>
+
+differently themed widgets can be in the same page.
+
+<UnThemedYButtonPrimary>i am not!</UnThemedYButtonPrimary>
+
+not sure if this is useful but why not.
 
 # Themed YModalForm
 
@@ -21,9 +28,9 @@ import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThS
 <Observe>
 {({ count, setState }) => (
 	<>
-		<button onClick={() => setState(s => ({ count: true }))}>
+		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
 		Click me
-		</button>
+		</YButtonPrimary>
 		{count &&
 			<YModalForm
 				title='Modal Title'
@@ -43,7 +50,10 @@ import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThS
 <Playground>
 <YTable>
 	<YThead><YTr>
-		<YTh>A<YThSortIndicator /></YTh>
+		<YTh>
+			A
+			<YThSortIndicator />
+		</YTh>
 		<YTh style={{width: '80%'}}>B</YTh>
 		<YTh>C<YThSortIndicator className='asc' /></YTh>
 	</YTr></YThead>
