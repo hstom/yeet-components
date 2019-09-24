@@ -69,5 +69,4 @@ export const ThemableYModalForm = (globalTheme = {}) => {
     
 }
 
-export const YModalForm = ThemableYModalForm();
-export default YModalForm;
+export default ThemableYModalForm();

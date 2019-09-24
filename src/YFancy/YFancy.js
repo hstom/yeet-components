@@ -1,9 +1,7 @@
-import YModalForm, {ThemableYModalForm} from './YModalForm/YModalForm';
+import {ThemableYModalForm} from './YModalForm/YModalForm';
 
 export const ThemableYFancy = globalTheme => ({
     YModalForm: ThemableYModalForm(globalTheme)
 })
 
-export default {
-    YModalForm
-}
+export default ThemableYFancy

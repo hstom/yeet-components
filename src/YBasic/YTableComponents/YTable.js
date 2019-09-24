@@ -1,70 +1,45 @@
-import React from 'react';
-import { catClassName } from '../../util.js';
+import { buildGenericThemableComponent } from '../../util.js';
 import './YTableComponents.css';
-import YTHead from './YThead.js'
-import YTh from './YTh.js';
-import YTBody from './YTbody.js';
-import YTr from './YTr.js';
-import YTd from './YTd.js';
-import YThSortIndicator from './YThSortIndicator.js';
 
-const YTableDefaultClassName = 'y y-table';
+import { ThemableYTbody } from './YTbody.js';
+import { ThemableYTd } from './YTd.js';
+import { ThemableYTh } from './YTh.js';
+import { ThemableYThead } from './YThead.js';
+import { ThemableYThSortIndicator } from './YThSortIndicator';
+import { ThemableYTr } from './YTr.js';
 
-export const ThemableYTable = (globalTheme = {}) => {
+const ThemableYTable = buildGenericThemableComponent({
+    Tag: 'table',
+    componentClassName: 'y-table',
+    themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTable || {})
+});
 
-    const {
-        defaultStyle = {},
-        defaultClassName = '',
-        excludeComponentDefaultClassName = false,
-    } = ((globalTheme.YBasic || {}).YTable || {});
-
-    return class extends React.Component {
-        render() {
-            const {
-                style = {},
-    
-                className: propClassName,
-                childClassName: propChildClassName,
-    
-                children,
-    
-                ...props
-            } = this.props;
-            return (
-                <table
-                    className={catClassName(
-                        (excludeComponentDefaultClassName ? '' : YTableDefaultClassName),
-                        defaultClassName,
-                        propClassName
-                    )}
-                    ref={this.tableRef}
-                    style={Object.assign({}, defaultStyle, style)}
-                    {...props}
-                >
-                    {children}
-                </table>
-            );
-        }
-    }
-
-}
-
-const YTable = ThemableYTable();
 export {
-    YTable,
-    YTHead,
-    YTh,
-    YTBody,
-    YTr,
-    YTd,
-    YThSortIndicator
+    ThemableYTable,
+    ThemableYTbody,
+    ThemableYTd,
+    ThemableYTh,
+    ThemableYThead,
+    ThemableYThSortIndicator,
+    ThemableYTr
 }
+
+
+export const YTable = ThemableYTable();
+export const YTBody = ThemableYTbody();
+export const YTd = ThemableYTd();
+export const YTh = ThemableYTh();
+export const YThead = ThemableYThead();
+export const YThSortIndicator = ThemableYThSortIndicator();
+export const YTr = ThemableYTr();
+
 
 export default {
     YTable,
-    YTHead,
-    YTh,
     YTBody,
-    YTr,
-    YTd
+    YTd,
+    YTh,
+    YThead,
+    YThSortIndicator,
+    YTr
 };

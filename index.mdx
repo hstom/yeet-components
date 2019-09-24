@@ -8,7 +8,8 @@ import { State, Observe } from "mdx-observable";
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
 import YModal from './src/YBasic/YModal/YModal.js';
-import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import { YTable, YThead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import YComponents from './src/YComponents.js';
 
 # UI Library for iconoclasts
 
@@ -17,7 +18,7 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
 {({ count, setState }) => (
 	<>
 		<YTable>
-        <YTHead>
+        <YThead>
             <YTr>
                 <YTh style={{width: '25%'}}>
                     Col A
@@ -35,7 +36,7 @@ import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/Y
                     <YThSortIndicator className='desc' />
                 </YTh>
             </YTr>
-        </YTHead>
+        </YThead>
         <YTBody>
             <YTr>
                 <YTd>

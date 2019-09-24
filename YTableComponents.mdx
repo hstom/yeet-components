@@ -4,43 +4,64 @@ menu: YBasic
 ---
 
 import { Playground } from 'docz';
-import { YTable, YTHead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import { State, Observe } from "mdx-observable";
+import { YTable, YThead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
 
 # YTableComponents
+these are just regular table components with some default class names that set up some default stylings.
 
-last th being resizable is a bit weird, toggle off with resize={false}
+this has an example sortability on the first column.
 
 <Playground>
-	<YTable>
-        <YTHead>
+<State initialState={{ sort: undefined, sortClass: ''}}>
+<Observe>
+{({ sort, sortClass, setState }) => (
+        <YTable>
+        <YThead>
             <YTr>
-                <YTh>
+                <YTh resizable={true}>
                     Col A
-                    <YThSortIndicator />
+                    <YThSortIndicator
+                        onClick={() => setState({
+                            sort: (sortClass === 'desc'
+                                ? (a, b) => b.key - a.key
+                                : (a, b) => a.key - b.key),
+                            sortClass: (sortClass === 'desc'
+                                ? 'asc'
+                                : 'desc')
+                        })}
+                        className={sortClass}
+                    />
                 </YTh>
                 <YTh>
                     Col B
                 </YTh>
                 <YTh>
                     Col C
-                    <YThSortIndicator className='asc' />
                 </YTh>
-                <YTh resizable={false}>
+                <YTh>
                     Col D
-                    <YThSortIndicator className='desc' />
                 </YTh>
             </YTr>
-        </YTHead>
+        </YThead>
         <YTBody>
-            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
-            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
-            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
-            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
-            
+            {[
+                {key: 3, prefix: 'B'},
+                {key: 73, prefix: 'Z'},
+                {key: 1, prefix: 'B'},
+                {key: 22, prefix: 'Z'}
+            ].sort(sort).map(
+                elem => <YTr key={elem.key}>
+                    {['EEP', 'OOP', 'EEP', 'OOP'].map((suffix, i) => <YTd key={suffix + i}>{i === 0 ? elem.key : elem.prefix + suffix}</YTd>)}
+                </YTr>
+            )}
         </YTBody>
     </YTable>
+) }
+</Observe>
+</State>
 </Playground>
 
 # Source

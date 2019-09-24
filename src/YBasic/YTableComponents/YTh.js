@@ -1,49 +1,21 @@
-import React from 'react';
-import { catClassName } from '../../util.js';
+import { buildGenericThemableComponent } from '../../util.js';
 import './YTableComponents.css';
 
-const YThDefaultClassName = 'y y-th';
+export const ThemableYTh =
+    globalTheme =>
+        ({
+            style = {},
+            resizable = false,
+            ...props
+        }) => buildGenericThemableComponent({
+            Tag: 'th',
+            componentClassName: 'y-th',
+            themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTh || {})
+        })(
+            globalTheme
+        )(
+            Object.assign({}, props, { style: Object.assign({}, style, { resize: resizable ? 'horizontal' : style.resize }) })
+        );
 
-export const ThemableYTh = (globalTheme = {}) => {
 
-    const {
-        defaultStyle = {},
-        defaultClassName = '',
-        excludeComponentDefaultClassName = false,
-    } = ((globalTheme.YBasic || {}).YTh || {});
-
-    const YThClass = class extends React.Component {
-        render() {
-            const {
-                style = {},
-
-                className: propClassName,
-                childClassName: propChildClassName,
-
-                children,
-                resizable = true,
-                ...props
-            } = this.props;
-
-            return (
-                <th
-                    className={catClassName(
-                        (excludeComponentDefaultClassName ? '' : YThDefaultClassName),
-                        defaultClassName,
-                        resizable ? 'resizable' : '',
-                        propClassName
-                    )}
-                    style={Object.assign({}, defaultStyle, style)}
-                    {...props}
-                >
-                    {children}
-                </th>
-            );
-        }
-    }
-    return YThClass;
-    
-}
-
-const YTh = ThemableYTh();
-export default YTh;
+export default ThemableYTh();
