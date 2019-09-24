@@ -1,42 +1,32 @@
-import React from 'react';
-import {catClassName} from '../../util.js';
+import { buildGenericThemableComponent } from '../../util.js';
 import './YButton.css';
 
-const YButtonDefaultClassName = 'y y-button';
+const _ThemableYButton = buildGenericThemableComponent({
+    Tag: 'button',
+    componentClassName: 'y-button',
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+});
 
-const themableYButtonGenerator = (globalTheme = {}) => {
-	const {
-		defaultStyle={},
-		defaultClassName='',
-		excludeComponentDefaultClassName=false
-	} = (((globalTheme.YBasic || {}).YButton) || {});
+const _ThemableYButtonPrimary = buildGenericThemableComponent({
+    Tag: 'button',
+    componentClassName: 'y-button primary',
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+});
 
-	return ({typeClassName}) => ({style = defaultStyle, className: propClassName, children, ...props}) => {
-		return (
-			<button
-				style={Object.assign({}, defaultStyle, style)}
-				className={catClassName(
-					(excludeComponentDefaultClassName ? '' : YButtonDefaultClassName),
-					defaultClassName,
-					typeClassName,
-					propClassName
-				)}
-				{...props}
-			>
-				{children}
-			</button>
-		);
-	}
-}
+const _ThemableYButtonSecondary = buildGenericThemableComponent({
+    Tag: 'button',
+    componentClassName: 'y-button secondary',
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+});
 
-export const YButton = themableYButtonGenerator()({typeClassName: ''});
-export const YButtonPrimary = themableYButtonGenerator()({typeClassName: 'primary'})
-export const YButtonSecondary = themableYButtonGenerator()({typeClassName: 'secondary'});
+export const YButton = _ThemableYButton();
+export const YButtonPrimary = _ThemableYButtonPrimary()
+export const YButtonSecondary = _ThemableYButtonSecondary();
 
 export const ThemableYButton = globalTheme => ({
-	YButton: themableYButtonGenerator(globalTheme)({typeClassName: ''}),
-	YButtonPrimary: themableYButtonGenerator(globalTheme)({typeClassName: 'primary'}),
-	YButtonSecondary: themableYButtonGenerator(globalTheme)({typeClassName: 'secondary'})
+	YButton: _ThemableYButton(globalTheme),
+	YButtonPrimary: _ThemableYButtonPrimary(globalTheme),
+	YButtonSecondary: _ThemableYButtonSecondary(globalTheme)
 });
 
 export default {

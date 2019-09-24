@@ -12,7 +12,6 @@ export const buildGenericThemableComponent = ({
     // TODO: add prop munger for ease of use
 }) => {
     return (globalTheme = {}) => {
-
         const {
             defaultStyle = {},
             defaultClassName = '',
@@ -21,12 +20,9 @@ export const buildGenericThemableComponent = ({
 
         return ({
             style = {},
-
-            className: propClassName,
-            childClassName: propChildClassName,
+            className,
 
             children,
-
             ...props
         }) => {
             return (
@@ -34,7 +30,7 @@ export const buildGenericThemableComponent = ({
                     className={catClassName(
                         (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
                         defaultClassName,
-                        propClassName
+                        className
                     )}
                     style={Object.assign({}, defaultStyle, style)}
                     {...props}
