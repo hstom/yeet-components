@@ -16,7 +16,7 @@ export const ThemableYModal = (globalTheme = {}) => {
         excludeComponentDefaultChildClassName=false
     } = ((globalTheme.YBasic || {}).YTable || {});
 
-    return ({
+    const YModalComponent = ({
         style = {},
         childStyle = {},
         
@@ -50,6 +50,8 @@ export const ThemableYModal = (globalTheme = {}) => {
             </div>
         );
     }
+    YModalComponent.displayName = 'YModal';
+    return YModalComponent;
     
 }
 

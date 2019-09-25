@@ -30,7 +30,7 @@ export const ThemableYModalForm = (globalTheme = {}) => {
             <YButtonPrimary onClick={submitAction}>Submit</YButtonPrimary>
         </div>;
 
-    return ({
+    const YModalFormComponent = ({
         style = {},
         childStyle = {},
         
@@ -66,6 +66,8 @@ export const ThemableYModalForm = (globalTheme = {}) => {
             </YModal>
         );
     }
+    YModalFormComponent.displayName = 'YModalForm';
+    return YModalFormComponent;
     
 }
 

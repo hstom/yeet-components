@@ -4,19 +4,22 @@ import './YButton.css';
 const _ThemableYButton = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
+    displayName: 'YButton'
 });
 
 const _ThemableYButtonPrimary = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button primary',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
+    displayName: 'YButtonPrimary'
 });
 
 const _ThemableYButtonSecondary = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button secondary',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {})
+    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
+    displayName: 'YButtonSecondary'
 });
 
 export const YButton = _ThemableYButton();

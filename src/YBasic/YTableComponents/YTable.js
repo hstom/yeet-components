@@ -11,7 +11,8 @@ import { ThemableYTr } from './YTr.js';
 const ThemableYTable = buildGenericThemableComponent({
     Tag: 'table',
     componentClassName: 'y-table',
-    themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTable || {})
+    themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTable || {}),
+    displayName: 'YTable'
 });
 
 export {

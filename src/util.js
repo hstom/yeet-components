@@ -9,6 +9,7 @@ export const buildGenericThemableComponent = ({
     Tag = 'div',
     componentClassName = '',
     themeSelector = () => { },
+    displayName='YComponent'
     // TODO: add prop munger for ease of use
 }) => {
     return (globalTheme = {}) => {
@@ -18,7 +19,7 @@ export const buildGenericThemableComponent = ({
             excludeComponentDefaultClassName = false,
         } = themeSelector(globalTheme);
 
-        return ({
+        const Component = ({
             style = {},
             className,
 
@@ -39,6 +40,8 @@ export const buildGenericThemableComponent = ({
                 </Tag>
             );
         }
+        Component.displayName = displayName;
+        return Component;
 
     }
 }

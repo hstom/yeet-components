@@ -10,7 +10,8 @@ export const ThemableYTh =
         }) => buildGenericThemableComponent({
             Tag: 'th',
             componentClassName: 'y-th',
-            themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTh || {})
+            themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTh || {}),
+            displayName: 'YTh'
         })(
             globalTheme
         )(
