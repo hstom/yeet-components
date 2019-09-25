@@ -1,4 +1,5 @@
 module.exports = {
 	dest: '/docs',
-	base: '/yeet-components/'
+	base: '/yeet-components/',
+	title: 'YEET'
 }
