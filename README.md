@@ -51,3 +51,9 @@ export const buildGenericThemableComponent = ({
     }
 }
 ```
+
+e.g. 
+```
+const themableSection = buildGenericThemableComponent({Tag:'section', componentClassName:'y-section', g=>((g.YBasic || {}).YSection || {}), displayName:'YSection'});
+```
+then churn out some css targeting .y.y-section
