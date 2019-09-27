@@ -25,7 +25,7 @@ const themedComponents = ThemableYComponents({
     }
 });
 
-export const YButtonPrimary = themedComponents.YBasic.YButton.YButtonPrimary
+export const YButtonPrimary = themedComponents.YBasic.YButtonPrimary
 export const YModalForm = themedComponents.YFancy.YModalForm;
 export const YTable = themedComponents.YBasic.YTable;
 export const YThead = themedComponents.YBasic.YThead;

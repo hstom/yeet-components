@@ -9,7 +9,7 @@
     background-color: rgb(0,0,0,.35);
 }
 
-.y.y-modal-content {
+.y.y-modal-child {
     position: absolute;
     max-height: 80%;
     overflow-y: auto;

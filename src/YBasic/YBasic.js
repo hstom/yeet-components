@@ -1,4 +1,4 @@
-import {ThemableYButton} from './YButton/YButton';
+import {ThemableYButton, ThemableYButtonPrimary, ThemableYButtonSecondary} from './YButton/YButton';
 import {ThemableYModal} from './YModal/YModal';
 import {ThemableYTable} from './YTableComponents/YTable';
 import {ThemableYTbody} from './YTableComponents/YTbody';
@@ -11,6 +11,8 @@ import {ThemableYThSortIndicator} from './YTableComponents/YThSortIndicator';
 export const ThemableYBasic = globalTheme => {
     return ({
     YButton: ThemableYButton(globalTheme),
+    YButtonPrimary: ThemableYButtonPrimary(globalTheme),
+    YButtonSecondary: ThemableYButtonSecondary(globalTheme),
     YModal: ThemableYModal(globalTheme),
     YTable: ThemableYTable(globalTheme),
     YThead: ThemableYThead(globalTheme),

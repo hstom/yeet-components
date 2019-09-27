@@ -1,58 +1,47 @@
 import React from 'react';
-import { catClassName } from '../../util.js';
+import { buildGenericThemableComponent } from '../../util.js';
 import './YModal.css';
 
-const YModalDefaultClassName = 'y y-modal';
-const YModalDefaultChildClassName = 'y y-modal-content'
+const ThemableYModalWrapper = buildGenericThemableComponent({
+    Tag: 'div',
+    componentClassName: 'y-modal',
+    themeSelector: globalTheme => ((globalTheme.YBasic || {}).YModal || {}),
+    displayName: 'YModal'
+});
 
-export const ThemableYModal = (globalTheme = {}) => {
+const ThemableYModalChild = buildGenericThemableComponent({
+    Tag: 'div',
+    componentClassName: 'y-modal-child',
+    themeSelector: globalTheme => (((globalTheme.YBasic || {}).YModal || {}).child || {}),
+    displayName: 'YModalChild'
+});
 
-    const {
-        defaultStyle={},
-        defaultChildStyle={}, 
-        defaultClassName='',
-        defaultChildClassName='',
-        excludeComponentDefaultClassName=false,
-        excludeComponentDefaultChildClassName=false
-    } = ((globalTheme.YBasic || {}).YTable || {});
+export const ThemableYModal = globalTheme => {
+    const ThemedYModalWrapper = ThemableYModalWrapper(globalTheme);
+    const ThemedYModalChild = ThemableYModalChild(globalTheme);
 
-    const YModalComponent = ({
+    return ({
         style = {},
-        childStyle = {},
-        
-        className: propClassName,
-        childClassName: propChildClassName,
+        className = '',
+
+        child = {},
         
         children,
         
         ...props
-    }) => {
-        return (
-            <div
-                className={catClassName(
-                    (excludeComponentDefaultClassName ? '' : YModalDefaultClassName),
-                    defaultClassName,
-                    propClassName
-                )}
-                style={Object.assign({}, defaultStyle, style)}
-                {...props}
-            >
-                <div
-                    className={catClassName(
-                        (excludeComponentDefaultChildClassName ? '' : YModalDefaultChildClassName),
-                        defaultChildClassName,
-                        propChildClassName
-                    )}
-                    style={Object.assign({}, defaultChildStyle, childStyle)}
-                >
-                    {children}
-                </div>
-            </div>
-        );
-    }
-    YModalComponent.displayName = 'YModal';
-    return YModalComponent;
-    
+    }) => (
+    <ThemedYModalWrapper
+        style={style}
+        className={className}
+        {...props}
+    >
+        <ThemedYModalChild
+            {...child}
+        >
+            {children}
+        </ThemedYModalChild>
+    </ThemedYModalWrapper>
+    );
 }
 
 const YModal = ThemableYModal();

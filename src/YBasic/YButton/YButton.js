@@ -1,35 +1,35 @@
 import { buildGenericThemableComponent } from '../../util.js';
 import './YButton.css';
 
-const _ThemableYButton = buildGenericThemableComponent({
+export const ThemableYButton = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button',
     themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
     displayName: 'YButton'
 });
 
-const _ThemableYButtonPrimary = buildGenericThemableComponent({
+export const ThemableYButtonPrimary = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button primary',
     themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
     displayName: 'YButtonPrimary'
 });
 
-const _ThemableYButtonSecondary = buildGenericThemableComponent({
+export const ThemableYButtonSecondary = buildGenericThemableComponent({
     Tag: 'button',
     componentClassName: 'y-button secondary',
     themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YButton) || {}),
     displayName: 'YButtonSecondary'
 });
 
-export const YButton = _ThemableYButton();
-export const YButtonPrimary = _ThemableYButtonPrimary()
-export const YButtonSecondary = _ThemableYButtonSecondary();
+export const YButton = ThemableYButton();
+export const YButtonPrimary = ThemableYButtonPrimary()
+export const YButtonSecondary = ThemableYButtonSecondary();
 
-export const ThemableYButton = globalTheme => ({
-	YButton: _ThemableYButton(globalTheme),
-	YButtonPrimary: _ThemableYButtonPrimary(globalTheme),
-	YButtonSecondary: _ThemableYButtonSecondary(globalTheme)
+export const ThemableYButtons = globalTheme => ({
+	YButton: ThemableYButton(globalTheme),
+	YButtonPrimary: ThemableYButtonPrimary(globalTheme),
+	YButtonSecondary: ThemableYButtonSecondary(globalTheme)
 });
 
 export default {

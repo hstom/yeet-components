@@ -1,74 +1,88 @@
 import React from 'react';
 import {ThemableYModal} from '../../YBasic/YModal/YModal.js';
-import {ThemableYButton} from '../../YBasic/YButton/YButton.js';
-import {catClassName} from '../../util.js';
+import {ThemableYButtonPrimary, ThemableYButtonSecondary} from '../../YBasic/YButton/YButton';
+import {catClassName, buildGenericThemableComponent} from '../../util.js';
 import './YModalForm.css';
 
-export const ThemableYModalForm = (globalTheme = {}) => {
-    const componentTheme = ((globalTheme.YFancy ||{}).YModalForm) || {}; 
+const ThemableYModalFormHeader = buildGenericThemableComponent({
+    Tag: 'div',
+    componentClassName: 'y-modal-form-header y-modal-form-region',
+    themeSelector: globalTheme => (((globalTheme.YBasic || {}).YModalForm || {}).header || {}),
+    displayName: 'YModalFormHeader'
+});
 
-    const {
-        overrideHeaderComponent: themeHeaderComponent,
-        overrideFooterComponent: themeFooterComponent
-    } = componentTheme;
+const ThemableYModalFormBody = buildGenericThemableComponent({
+    Tag: 'div',
+    componentClassName: 'y-modal-form-body y-modal-form-region',
+    themeSelector: globalTheme => (((globalTheme.YBasic || {}).YModalForm || {}).body || {}),
+    displayName: 'YModalFormBody'
+});
 
-    const YModal = ThemableYModal(globalTheme);
-    const { YButtonPrimary, YButtonSecondary} = ThemableYButton(globalTheme);
+const ThemableYModalFormFooter = buildGenericThemableComponent({
+    Tag: 'div',
+    componentClassName: 'y-modal-form-footer y-modal-form-region',
+    themeSelector: globalTheme => (((globalTheme.YBasic || {}).YModalForm || {}).footer || {}),
+    displayName: 'YModalFormFooter'
+});
 
-    const DefaultHeader = ({title}) => 
-        <div
-            className='y y-modal-form y-modal-form-region y-modal-form-header'
-        >
-            {title}
-        </div>;
+export const ThemableYModalForm = globalTheme => {
+    const ThemedYModal = ThemableYModal(globalTheme);
+    const ThemedYButtonPrimary = ThemableYButtonPrimary(globalTheme);
+    const ThemedYButtonSecondary = ThemableYButtonSecondary(globalTheme);
 
-    const DefaultFooter = ({submitAction, cancelAction}) =>
-        <div
-            className='y y-modal-form y-modal-form-region y-modal-form-footer'
-        >
-            <YButtonSecondary onClick={cancelAction}>Cancel</YButtonSecondary>
-            <YButtonPrimary onClick={submitAction}>Submit</YButtonPrimary>
-        </div>;
+    const ThemedYModalFormHeader = ThemableYModalFormHeader(globalTheme);
+    const ThemedYModalFormBody = ThemableYModalFormBody(globalTheme);
+    const ThemedYModalFormFooter = ThemableYModalFormFooter(globalTheme);
 
     const YModalFormComponent = ({
         style = {},
-        childStyle = {},
+        className = '',
         
-        className,
-        childClassName,
-        wrapperClassName,
+        child = {},
+        header = {},
+        body = {},
+        footer = {},
 
-        overrideHeaderComponent,
-        overrideFooterComponent,
-        
         title,
-        children,
         submitAction,
         cancelAction,
         
+        children,
+
         ...props
-    }) => {
-
-        const HeaderComponent = overrideHeaderComponent || themeHeaderComponent || DefaultHeader;
-        const FooterComponent = overrideFooterComponent || themeFooterComponent || DefaultFooter;
-
-        return (
-            <YModal
-                className={catClassName('y y-modal-form y-modal-form', className)}
-                childClassName={catClassName('y y-modal-form y-modal-form-wrapper', wrapperClassName)}
-                {...props}
+    }) => (
+        <ThemedYModal
+            style={style}
+            className={catClassName('y-modal-form', className)}
+            child={child}
+            {...props}
+        >
+            <ThemedYModalFormHeader
+                {...header}
             >
-                <HeaderComponent title={title} />
-                <div className={catClassName('y y-modal-form y-modal-form-region', childClassName)}>
+                {title}
+            </ThemedYModalFormHeader>
+            <ThemedYModalFormBody
+                {...body}
+            >
                     {children}
-                </div>
-                <FooterComponent submitAction={submitAction} cancelAction={cancelAction} />
-            </YModal>
-        );
-    }
+            </ThemedYModalFormBody>
+            <ThemedYModalFormFooter
+                {...footer}
+            > {/*These are floated backwards */}
+                <ThemedYButtonSecondary onClick={cancelAction}>
+                    Cancel    
+                </ThemedYButtonSecondary>
+                <ThemedYButtonPrimary onClick={submitAction}>
+                    Submit
+                </ThemedYButtonPrimary>
+            </ThemedYModalFormFooter>
+
+        </ThemedYModal>
+    )
+
     YModalFormComponent.displayName = 'YModalForm';
     return YModalFormComponent;
-    
 }
 
 export default ThemableYModalForm();
