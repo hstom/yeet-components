@@ -1,0 +1,37 @@
+---
+name: YSelect
+menu: YBasic
+---
+
+import { Playground } from 'docz';
+import YSelect from './src/YBasic/YSelect/YSelect.js';
+import YOption from './src/YBasic/YSelect/YOption.js';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YSelect/YSelect.js'
+
+# YSelect
+
+
+## Normal
+<Playground>
+	<YSelect>
+        <YOption>A</YOption>
+        <YOption>B</YOption>
+        <YOption>C</YOption>
+        <YOption>D</YOption>
+    </YSelect>
+</Playground>
+
+## Multiple
+<Playground>
+	<YSelect multiple>
+        <YOption>There was a multitude of options.</YOption>
+        <YOption>There was a plethora of options.</YOption>
+        <YOption>There was an endless supply of options.</YOption>
+        <YOption>There was a large number of options.</YOption>
+        <YOption>There were myriad options.</YOption>
+    </YSelect>
+</Playground>
+
+# Source
+<SourceDisplay source={source} />
