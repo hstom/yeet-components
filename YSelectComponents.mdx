@@ -1,0 +1,26 @@
+---
+name: YSelectComponents
+menu: YBasic
+---
+
+import { Playground } from 'docz';
+import { State, Observe } from "mdx-observable";
+import YSelect from './src/YBasic/YSelectComponents/YSelectComponents.js';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YSelectComponents/YSelectComponents.js'
+
+# YSelectComponents
+
+<Playground>
+<YSelect
+    clearable={true || 'default'}
+    placeholder ={'Select...' || 'default'}
+    options={[
+        {value: '1', label: 'BEEP'},
+        {value: '2', label: 'BOOP'}
+    ]}
+/>
+</Playground>
+
+# Source
+<SourceDisplay source={source} />

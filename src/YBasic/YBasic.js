@@ -7,8 +7,6 @@ import {ThemableYTh} from './YTableComponents/YTh';
 import {ThemableYTr} from './YTableComponents/YTr';
 import {ThemableYTd} from './YTableComponents/YTd';
 import {ThemableYThSortIndicator} from './YTableComponents/YThSortIndicator';
-import {ThemableYSelect} from './YSelect/YSelect.js';
-import {ThemableYOption} from './YSelect/YOption.js';
 
 export const ThemableYBasic = globalTheme => {
     return ({
@@ -22,9 +20,7 @@ export const ThemableYBasic = globalTheme => {
     YTbody: ThemableYTbody(globalTheme),
     YTr: ThemableYTr(globalTheme),
     YTd: ThemableYTd(globalTheme),
-    YThSortIndicator: ThemableYThSortIndicator(globalTheme),
-    YSelect: ThemableYSelect(globalTheme),
-    YOption: ThemableYOption(globalTheme)
+    YThSortIndicator: ThemableYThSortIndicator(globalTheme)
 })};
 
 export default ThemableYBasic;

@@ -10,7 +10,8 @@ export const buildGenericThemableComponent = ({
     componentClassName = '',
     themeSelector = () => { },
     displayName='YComponent',
-    propMutator = props => props
+    propMutator = props => props,
+    forwardRef = false
 }) => {
     return (globalTheme = {}) => {
         const {
@@ -18,6 +19,37 @@ export const buildGenericThemableComponent = ({
             defaultClassName = '',
             excludeComponentDefaultClassName = false,
         } = themeSelector(globalTheme);
+
+        if(forwardRef) { // TODO inline
+            const Component = (preProps) => {
+                const {
+                    style = {},
+                    className,
+        
+                    children,
+                    forwardedRef,
+                    ...props
+                } = propMutator(preProps);
+                return (
+                    <Tag
+                        className={catClassName(
+                            (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
+                            defaultClassName,
+                            className
+                        )}
+                        style={Object.assign({}, defaultStyle, style)}
+                        {...props}
+                        ref={forwardedRef}
+                    >
+                        {children}
+                    </Tag>
+                );
+            }
+            Component.displayName = displayName;
+            return React.forwardRef((props, ref) => {
+                return <Component {...props} forwardedRef={ref} />;
+            });
+        }
 
         const Component = (preProps) => {
             const {
