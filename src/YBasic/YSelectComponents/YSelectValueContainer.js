@@ -138,8 +138,9 @@ export const ThemableYSelectValueContainer = globalTheme => {
                 {options.filter(o => o.value === selected)[0].label}
             </ValueSingleValue>
         )}
-        {(searchable && menuOpen) && 
-            <ValueInputWrapper>
+        
+        {/* TODO fix tab into */}
+            <ValueInputWrapper> 
                 <ValueInputStage>
                     <ValueInput
                         autoCapitalize='none'
@@ -153,11 +154,18 @@ export const ThemableYSelectValueContainer = globalTheme => {
                         ref={forwardedRef}
                         onChange={onChange}
                         onKeyDown={onKeyDown}
+                        onFocus={() => {
+                            if(!menuOpen) {
+                                console.log('tab beep');
+                                toggleMenu();
+                            }
+                        }} 
                         onClick={(e) => {e.stopPropagation(); return false;}}
+                        style={{opacity: (searchable && menuOpen) ? '1' : '0'}}
                     ></ValueInput>
                 </ValueInputStage>
             </ValueInputWrapper>
-        }
+        
     </ValueContainer>);
 
     YSelectValueComponent.displayName = 'YSelectValueContainer';

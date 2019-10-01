@@ -1,7 +1,7 @@
 import React from 'react';
 import { buildGenericThemableComponent } from '../../util.js';
 import {ThemableYSelectValueContainer} from './YSelectValueContainer.js';
-import {dropdownPath, clearablePath} from './YSelectSVGs.js';
+import {ThemableYSelectIndicatorContainer} from './YSelectIndicatorContainer.js';
 import './YSelectComponents.css';
 
 /**
@@ -20,68 +20,6 @@ export const ThemableYSelectStage = buildGenericThemableComponent({
     componentClassName: 'y-select-stage',
     themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).stage || {}),
     displayName: 'YSelectStage'
-});
-
-/**
- * INDICATOR REGION
- */
-
-export const ThemableYSelectIndicatorContainer = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-indicator-container',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorContainer || {}),
-    displayName: 'YSelectIndicatorContainer'
-});
-
-export const ThemableYSelectIndicatorSeparator = buildGenericThemableComponent({
-    Tag: 'span',
-    componentClassName: 'y-select-indicator-separator',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorSeparator || {}),
-    displayName: 'YSelectIndicatorSeparator'
-});
-
-export const ThemableYSelectIndicatorClearable  = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-indicator-clearable',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorClearable || {}),
-    displayName: 'YSelectIndicatorClearable'
-});
-
-export const ThemableYSelectIndicatorClearableSVG = buildGenericThemableComponent({
-    Tag: 'svg',
-    componentClassName: 'y-select-indicator-dropdown-svg',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorClearableSVG || {}),
-    displayName: 'YSelectIndicatorDropdownSVG',
-    propMutator: () => ({
-        height: '20px',
-        width: '20px',
-        viewBox: '0 0 20 20',
-        'aria-hidden': true,
-        focusable: false,
-        children: <path d={clearablePath}></path>
-    })
-});
-
-export const ThemableYSelectIndicatorDropdown = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-indicator-dropdown',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorDropdown || {}),
-    displayName: 'YSelectIndicatorDropdown'
-});
-
-export const ThemableYSelectIndicatorDropdownSVG = buildGenericThemableComponent({
-    Tag: 'svg',
-    componentClassName: 'y-select-indicator-dropdown-svg',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).indicatorDropdownSVG || {}),
-    displayName: 'YSelectIndicatorDropdownSVG',
-    propMutator: () => ({
-        height: '20px',
-        width: '20px',
-        viewBox: '0 0 20 20',
-        'aria-hidden': true,
-        focusable: false,
-        children: <path d={dropdownPath}></path>
-    })
 });
 
 /**
@@ -123,14 +61,7 @@ export const ThemableYSelect = globalTheme => {
     const Stage = ThemableYSelectStage(globalTheme);
 
     const ValueContainer = ThemableYSelectValueContainer(globalTheme);
-
-
     const IndicatorContainer = ThemableYSelectIndicatorContainer(globalTheme);
-    const IndicatorSeparator = ThemableYSelectIndicatorSeparator(globalTheme);
-    const IndicatorClearable = ThemableYSelectIndicatorClearable(globalTheme);
-    const IndicatorClearableSVG = ThemableYSelectIndicatorClearableSVG(globalTheme);
-    const IndicatorDropdown = ThemableYSelectIndicatorDropdown(globalTheme);
-    const IndicatorDropdownSVG = ThemableYSelectIndicatorDropdownSVG(globalTheme);
 
     const Menu = ThemableYSelectMenu(globalTheme);
     const MenuList = ThemableYSelectMenuList(globalTheme);
@@ -143,6 +74,7 @@ export const ThemableYSelect = globalTheme => {
             this.ref = React.createRef();
             this.inputRef = React.createRef();
             this.highlightedRef = React.createRef();
+            this.selectedRef = React.createRef();
             this.state = {
                 menuOpen: false,
                 selected: null,
@@ -166,6 +98,7 @@ export const ThemableYSelect = globalTheme => {
         };
 
         toggleMenu = () => {
+            console.log('beep');
             let exitState;
             this.setState(
                 ({menuOpen, searchString, ...rest}) => Object.assign(
@@ -177,15 +110,37 @@ export const ThemableYSelect = globalTheme => {
                         highlightIndex: null
                     }
                 ),
-                () => this.inputRef.current && (exitState ? this.inputRef.current.focus() : this.inputRef.current.blur())
+                () => {
+                    if(exitState && this.selectedRef.current) {
+                        this.selectedRef.current.parentNode.scrollTop =this.selectedRef.current.offsetTop;
+                    }
+                    this.inputRef.current && (exitState ? this.inputRef.current.focus() : this.inputRef.current.blur())
+                }
         )};
 
-        selectableMenuOption = value => () => this.setState(
+        selectableMenuOption = value => () => {console.log('zooq'); this.setState(
             {menuOpen: false, selected: value, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(value));
+        }
 
-        clearSelection = () => this.setState({menuOpen: false, selected: null, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(null));
+        clearSelection = () => {
+            const wasntNull = this.state.selected !== null;
+            this.setState({
+                menuOpen: false,
+                selected: null,
+                searchString: '',
+                highlightIndex: null
+            }, () => {
+                console.log('zooooop');
+                if(this.inputRef.current){this.inputRef.current.blur();}
+                if(wasntNull){(this.props.onChange || (() => {}))(null)}
+            }
+            );
+        }
         
-        onSearchStringChange = e => this.setState({searchString: e.target.value, highlightIndex: null});
+        onSearchStringChange = e => {
+            console.log('borp');
+            this.setState({searchString: e.target.value, highlightIndex: null});
+        }
 
         getMenuOptions = () => this.props.options
         .filter(({label}) => label.toLowerCase().includes(this.state.searchString.toLowerCase()));
@@ -193,7 +148,6 @@ export const ThemableYSelect = globalTheme => {
         onInputKeyDown = e => {
             const eKey = e.key;
             if(eKey === 'ArrowDown' || eKey === 'ArrowUp') {
-                
                 this.setState(({highlightIndex}) => {
                     let nextIndex = 0;
                     if(highlightIndex !== null){
@@ -215,7 +169,7 @@ export const ThemableYSelect = globalTheme => {
                     return {highlightIndex: nextIndex};
                 }, () => {
                     if(this.state.highlightIndex !== null && this.highlightedRef.current) {
-                        this.highlightedRef.current.parentNode.scrollTop = this.highlightedRef.current.offsetTop;
+                        this.highlightedRef.current.parentNode.scrollTop =this.highlightedRef.current.offsetTop;
                     }
                 });
                 e.preventDefault();
@@ -225,11 +179,23 @@ export const ThemableYSelect = globalTheme => {
                 if(this.state.highlightIndex !== null && this.state.highlightIndex >= 0 && this.state.highlightIndex < menuOptions.length) {
                     const selectedOption = this.getMenuOptions()[this.state.highlightIndex];
                     this.selectableMenuOption(selectedOption.value)();
+                    this.inputRef.current.blur();
                     e.preventDefault();
                 } else {
                     this.setState({highlightIndex: 0});
                     e.preventDefault();
                 }
+            }
+            if(eKey === 'Escape') {
+                this.setState({
+                    menuOpen: false,
+                    searchString: '',
+                    highlightIndex: null
+                }, () => {
+                    if(this.inputRef.current){this.inputRef.current.blur();}
+                }
+                );
+                e.preventDefault();
             }
         }
 
@@ -238,7 +204,9 @@ export const ThemableYSelect = globalTheme => {
                 options = [],
                 placeholder = 'Select...',
                 clearable = true,
-                searchable = true
+                searchable = true,
+                onChange, // strip out
+                ...rest
             } = this.props;
 
             const menuOptions = this.getMenuOptions()
@@ -248,17 +216,23 @@ export const ThemableYSelect = globalTheme => {
                     data-value={value} // I'm here for dev tool visibility
                     onClick={this.selectableMenuOption(value)}
                     key={`${value}-${i}`}
-                    {...(
-                        i === this.state.highlightIndex
-                        ? {ref: this.highlightedRef}
-                        : {}
-                    )}
+                    {
+                        ...Object.assign(
+                            {},
+                            value === this.state.selected
+                            ? {ref: this.selectedRef}
+                            : {},
+                            i === this.state.highlightIndex
+                            ? {ref: this.highlightedRef}
+                            : {},
+                        )
+                    }
                 >
                     {label}
                 </MenuOption>));
 
             return (<Wrapper ref={this.ref}>
-                <Stage>
+                <Stage {...rest}>
                     <ValueContainer
                         menuOpen={this.state.menuOpen}
                         toggleMenu={this.toggleMenu}
@@ -271,18 +245,12 @@ export const ThemableYSelect = globalTheme => {
                         searchString={this.state.searchString}
                         ref={this.inputRef}
                     />
-                    <IndicatorContainer>
-                        {clearable && <IndicatorClearable
-                            onClick={this.clearSelection}
-                        >
-                            <IndicatorClearableSVG/>
-                        </IndicatorClearable>
-                        }
-                        <IndicatorSeparator/>
-                        <IndicatorDropdown onClick={this.toggleMenu}>
-                            <IndicatorDropdownSVG/>
-                        </IndicatorDropdown>
-                    </IndicatorContainer>
+                    <IndicatorContainer
+                        selected={this.state.selected}
+                        clearable={clearable}
+                        clearSelection={this.clearSelection}
+                        toggleMenu={this.toggleMenu}
+                    />
                 </Stage>
                 {this.state.menuOpen && <Menu>
                     <MenuList>
@@ -290,7 +258,7 @@ export const ThemableYSelect = globalTheme => {
                             menuOptions.length
                                 ? menuOptions
                                 : <MenuEmpty>{options.length ? 'No options match' : 'No options'}</MenuEmpty>
-                        } {/* TODO NO OPTIONS INDICATOR */}
+                        }
                     </MenuList>
                 </Menu>}
             </Wrapper>);

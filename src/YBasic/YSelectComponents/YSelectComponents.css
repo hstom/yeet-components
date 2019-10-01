@@ -27,6 +27,10 @@
     border-color: rgb(179, 179, 179);
 }
 
+.y.y-select-stage:focus-within {
+    border: 1px solid blue;
+}
+
 .y.y-select-value-container {
     -webkit-box-align: center;
     align-items: center;
@@ -195,6 +199,19 @@
 
 .y.y-select-indicator-dropdown-svg:hover {
     filter: drop-shadow(4px 4px 9px black);
+}
+
+.y.y-select-indicator-dropdown,
+.y.y-select-indicator-clearable {
+    background: unset;
+    border: unset;
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 1 */
+    line-height: 1.15; /* 1 */
+    margin: 0; /* 2 */
+    overflow: visible;
+    text-transform: none;
+    -webkit-appearance: button;
 }
 
 .y.y-select-menu {
