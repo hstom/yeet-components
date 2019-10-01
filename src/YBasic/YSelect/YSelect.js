@@ -2,10 +2,14 @@ import React from 'react';
 import { buildGenericThemableComponent } from '../../util.js';
 import {ThemableYSelectValueContainer} from './YSelectValueContainer.js';
 import {ThemableYSelectIndicatorContainer} from './YSelectIndicatorContainer.js';
+import {ThemableYSelectMenuContainer, ThemableYSelectMenuOption} from './YSelectMenuContainer.js';
 import './YSelectComponents.css';
 
 /**
- * LAYOUT
+ * 
+ * TODO LIST:
+ * highlighted index should target selected element on menuopen
+ * memoize filter of options for performance
  */
 export const ThemableYSelectWrapper = buildGenericThemableComponent({
     Tag: 'div',
@@ -22,40 +26,6 @@ export const ThemableYSelectStage = buildGenericThemableComponent({
     displayName: 'YSelectStage'
 });
 
-/**
- * MENU REGION
- */
-
-export const ThemableYSelectMenu = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menu || {}),
-    displayName: 'YSelectMenu'
-});
-
-export const ThemableYSelectMenuList = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-list',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuList || {}),
-    displayName: 'YSelectMenuList'
-});
-
-export const ThemableYSelectMenuOption = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-option',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuOption || {}),
-    displayName: 'YSelectMenuOption',
-    forwardRef: true
-});
-
-export const ThemableYSelectMenuEmpty = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-empty',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuEmpty || {}),
-    displayName: 'YSelectMenuEmpty'
-});
-
-
 export const ThemableYSelect = globalTheme => {
     const Wrapper = ThemableYSelectWrapper(globalTheme);
     const Stage = ThemableYSelectStage(globalTheme);
@@ -63,18 +33,18 @@ export const ThemableYSelect = globalTheme => {
     const ValueContainer = ThemableYSelectValueContainer(globalTheme);
     const IndicatorContainer = ThemableYSelectIndicatorContainer(globalTheme);
 
-    const Menu = ThemableYSelectMenu(globalTheme);
-    const MenuList = ThemableYSelectMenuList(globalTheme);
+    const Menu = ThemableYSelectMenuContainer(globalTheme);
     const MenuOption = ThemableYSelectMenuOption(globalTheme);
-    const MenuEmpty = ThemableYSelectMenuEmpty(globalTheme);
 
     class YSelectComponent extends React.Component {
         constructor(props) {
             super(props);
+
             this.ref = React.createRef();
             this.inputRef = React.createRef();
             this.highlightedRef = React.createRef();
             this.selectedRef = React.createRef();
+
             this.state = {
                 menuOpen: false,
                 selected: null,
@@ -98,7 +68,6 @@ export const ThemableYSelect = globalTheme => {
         };
 
         toggleMenu = () => {
-            console.log('beep');
             let exitState;
             this.setState(
                 ({menuOpen, searchString, ...rest}) => Object.assign(
@@ -107,18 +76,18 @@ export const ThemableYSelect = globalTheme => {
                     {
                         menuOpen: exitState = !menuOpen,
                         searchString: !menuOpen ? searchString : '',
-                        highlightIndex: null
+                        highlightIndex: this.getIndexOfSelectedMenuOptionOrNull(!menuOpen ? searchString : '') // auto-highlight selected option
                     }
                 ),
                 () => {
                     if(exitState && this.selectedRef.current) {
-                        this.selectedRef.current.parentNode.scrollTop =this.selectedRef.current.offsetTop;
+                        this.selectedRef.current.parentNode.scrollTop = this.selectedRef.current.offsetTop;
                     }
                     this.inputRef.current && (exitState ? this.inputRef.current.focus() : this.inputRef.current.blur())
                 }
         )};
 
-        selectableMenuOption = value => () => {console.log('zooq'); this.setState(
+        selectableMenuOption = value => () => {this.setState(
             {menuOpen: false, selected: value, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(value));
         }
 
@@ -130,20 +99,18 @@ export const ThemableYSelect = globalTheme => {
                 searchString: '',
                 highlightIndex: null
             }, () => {
-                console.log('zooooop');
                 if(this.inputRef.current){this.inputRef.current.blur();}
                 if(wasntNull){(this.props.onChange || (() => {}))(null)}
             }
             );
         }
         
-        onSearchStringChange = e => {
-            console.log('borp');
-            this.setState({searchString: e.target.value, highlightIndex: null});
-        }
+        onSearchStringChange = e => this.setState({searchString: e.target.value, highlightIndex: null});
+        
+        getMenuOptions = (searchStringForward = this.state.searchString) => this.props.options
+            .filter(({label}) => label.toLowerCase().includes(searchStringForward.toLowerCase()));
 
-        getMenuOptions = () => this.props.options
-        .filter(({label}) => label.toLowerCase().includes(this.state.searchString.toLowerCase()));
+        getIndexOfSelectedMenuOptionOrNull = (searchStringForward) => this.getMenuOptions().findIndex(o => o.value === this.state.selected) || null;
 
         onInputKeyDown = e => {
             const eKey = e.key;
@@ -252,15 +219,11 @@ export const ThemableYSelect = globalTheme => {
                         toggleMenu={this.toggleMenu}
                     />
                 </Stage>
-                {this.state.menuOpen && <Menu>
-                    <MenuList>
-                        {
-                            menuOptions.length
-                                ? menuOptions
-                                : <MenuEmpty>{options.length ? 'No options match' : 'No options'}</MenuEmpty>
-                        }
-                    </MenuList>
-                </Menu>}
+                <Menu
+                    menuOpen={this.state.menuOpen}
+                    menuOptions={menuOptions}
+                    options={options}
+                />
             </Wrapper>);
         }
     }
