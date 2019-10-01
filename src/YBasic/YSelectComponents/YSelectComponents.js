@@ -179,7 +179,7 @@ export const ThemableYSelect = globalTheme => {
         selectableMenuOption = value => () => this.setState(
             {menuOpen: false, selected: value, searchString: ''}, () => (this.props.onChange || (() => {}))(value));
 
-        clearSelection = () => this.setState({menuOpen: false, selected: null, searchString: ''});
+        clearSelection = () => this.setState({menuOpen: false, selected: null, searchString: ''}, () => (this.props.onChange || (() => {}))(null));
         
         onSearchStringChange = e => this.setState({searchString: e.target.value});
 
