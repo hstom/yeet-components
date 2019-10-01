@@ -110,6 +110,8 @@ export const ThemableYSelectValueContainer = globalTheme => {
         tabindex = "0",
         searchString,
         forwardedRef,
+        onChange,
+        onKeyDown,
         ...rest
     }) => (<ValueContainer
         onClick={toggleMenu}
@@ -140,15 +142,17 @@ export const ThemableYSelectValueContainer = globalTheme => {
             <ValueInputWrapper>
                 <ValueInputStage>
                     <ValueInput
-                        autocapitalize='none'
-                        autocomplete='off'
-                        autocorrect='off'
-                        spellcheck='false'
-                        tabindex={tabindex}
+                        autoCapitalize='none'
+                        autoComplete='off'
+                        autoCorrect='off'
+                        spellCheck='false'
+                        tabIndex={tabindex}
                         type='text'
                         aria-autocomplete='list'
                         value={searchString}
                         ref={forwardedRef}
+                        onChange={onChange}
+                        onKeyDown={onKeyDown}
                         onClick={(e) => {e.stopPropagation(); return false;}}
                     ></ValueInput>
                 </ValueInputStage>

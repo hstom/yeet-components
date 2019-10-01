@@ -106,7 +106,8 @@ export const ThemableYSelectMenuOption = buildGenericThemableComponent({
     Tag: 'div',
     componentClassName: 'y-select-menu-option',
     themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuOption || {}),
-    displayName: 'YSelectMenuOption'
+    displayName: 'YSelectMenuOption',
+    forwardRef: true
 });
 
 export const ThemableYSelectMenuEmpty = buildGenericThemableComponent({
@@ -141,10 +142,12 @@ export const ThemableYSelect = globalTheme => {
             super(props);
             this.ref = React.createRef();
             this.inputRef = React.createRef();
+            this.highlightedRef = React.createRef();
             this.state = {
                 menuOpen: false,
                 selected: null,
-                searchString: ''
+                searchString: '',
+                highlightIndex: null
             }
         }
 
@@ -170,18 +173,65 @@ export const ThemableYSelect = globalTheme => {
                     rest,
                     {
                         menuOpen: exitState = !menuOpen,
-                        searchString: !menuOpen ? searchString : ''
+                        searchString: !menuOpen ? searchString : '',
+                        highlightIndex: null
                     }
                 ),
                 () => this.inputRef.current && (exitState ? this.inputRef.current.focus() : this.inputRef.current.blur())
         )};
 
         selectableMenuOption = value => () => this.setState(
-            {menuOpen: false, selected: value, searchString: ''}, () => (this.props.onChange || (() => {}))(value));
+            {menuOpen: false, selected: value, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(value));
 
-        clearSelection = () => this.setState({menuOpen: false, selected: null, searchString: ''}, () => (this.props.onChange || (() => {}))(null));
+        clearSelection = () => this.setState({menuOpen: false, selected: null, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(null));
         
-        onSearchStringChange = e => this.setState({searchString: e.target.value});
+        onSearchStringChange = e => this.setState({searchString: e.target.value, highlightIndex: null});
+
+        getMenuOptions = () => this.props.options
+        .filter(({label}) => label.toLowerCase().includes(this.state.searchString.toLowerCase()));
+
+        onInputKeyDown = e => {
+            const eKey = e.key;
+            if(eKey === 'ArrowDown' || eKey === 'ArrowUp') {
+                
+                this.setState(({highlightIndex}) => {
+                    let nextIndex = 0;
+                    if(highlightIndex !== null){
+                        if(eKey === 'ArrowDown') {
+                            nextIndex = highlightIndex + 1;
+                        }
+                        if(eKey === 'ArrowUp') {
+                            nextIndex = highlightIndex - 1;
+                        }
+                    }
+                    if(nextIndex < 0) {
+                        nextIndex = 0;
+                    }
+                    const menuOptionsLength = this.getMenuOptions().length;
+                    if(nextIndex >= menuOptionsLength) {
+                        nextIndex = menuOptionsLength
+                    }
+                    
+                    return {highlightIndex: nextIndex};
+                }, () => {
+                    if(this.state.highlightIndex !== null && this.highlightedRef.current) {
+                        this.highlightedRef.current.parentNode.scrollTop = this.highlightedRef.current.offsetTop;
+                    }
+                });
+                e.preventDefault();
+            }
+            if(eKey === 'Enter') {
+                const menuOptions = this.getMenuOptions();
+                if(this.state.highlightIndex !== null && this.state.highlightIndex >= 0 && this.state.highlightIndex < menuOptions.length) {
+                    const selectedOption = this.getMenuOptions()[this.state.highlightIndex];
+                    this.selectableMenuOption(selectedOption.value)();
+                    e.preventDefault();
+                } else {
+                    this.setState({highlightIndex: 0});
+                    e.preventDefault();
+                }
+            }
+        }
 
         render() {
             const {
@@ -191,14 +241,18 @@ export const ThemableYSelect = globalTheme => {
                 searchable = true
             } = this.props;
 
-            const menuOptions = options
-            .filter(({label}) => label.toLowerCase().includes(this.state.searchString.toLowerCase()))
+            const menuOptions = this.getMenuOptions()
             .map(({value, label}, i) => (
                 <MenuOption 
-                    className={value === this.state.selected ? 'selected' : ''}
+                    className={(value === this.state.selected ? 'selected' : '') + (i === this.state.highlightIndex ? ' highlighted' : '')}
                     data-value={value} // I'm here for dev tool visibility
                     onClick={this.selectableMenuOption(value)}
                     key={`${value}-${i}`}
+                    {...(
+                        i === this.state.highlightIndex
+                        ? {ref: this.highlightedRef}
+                        : {}
+                    )}
                 >
                     {label}
                 </MenuOption>));
@@ -213,6 +267,7 @@ export const ThemableYSelect = globalTheme => {
                         placeholder={placeholder}
                         searchable={searchable}
                         onChange={this.onSearchStringChange}
+                        onKeyDown={this.onInputKeyDown}
                         searchString={this.state.searchString}
                         ref={this.inputRef}
                     />

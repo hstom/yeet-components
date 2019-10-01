@@ -232,6 +232,7 @@
     cursor: pointer;
 }
 
+.y.y-select-menu-option.highlighted,
 .y.y-select-menu-option:not(.selected):hover {
     background-color: rgb(222, 235, 255);
 }
