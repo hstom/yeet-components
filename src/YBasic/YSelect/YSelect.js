@@ -130,7 +130,7 @@ export const ThemableYSelect = globalTheme => {
                     }
                     const menuOptionsLength = this.getMenuOptions().length;
                     if(nextIndex >= menuOptionsLength) {
-                        nextIndex = menuOptionsLength
+                        nextIndex = menuOptionsLength - 1;
                     }
                     
                     return {highlightIndex: nextIndex};
