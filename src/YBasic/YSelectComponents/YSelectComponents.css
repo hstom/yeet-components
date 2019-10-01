@@ -39,6 +39,7 @@
     overflow: hidden;
     min-height: inherit;
     cursor: pointer;
+    height: 38px;
 }
 
 .y.y-select-multi-value-button {
@@ -96,6 +97,7 @@
     top: 50%;
     transform: translateY(-50%);
     box-sizing: border-box;
+    pointer-events: none;
 }
 
 .y.y-select-value-single-value {
@@ -110,6 +112,34 @@
     transform: translateY(-50%);
     box-sizing: border-box;
     overflow: hidden;
+}
+
+.y.y-select-value-input-wrapper {
+    margin: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    visibility: visible;
+    color: rgb(51, 51, 51);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.y.y-select-value-input-stage {
+    display: inline-block;
+    width: 100%;
+}
+
+.y.y-select-value-input {
+    box-sizing: content-box;
+    width: 100%;
+    background: 0px center;
+    border: 0px;
+    font-size: inherit;
+    opacity: 1;
+    outline: 0px;
+    padding: 0px;
+    color: inherit;
+    height: 29px;
 }
 
 .y.y-select-indicator-container {
@@ -209,4 +239,11 @@
 .y.y-select-menu-option.selected {
     background-color: rgb(38, 132, 255);
     color: rgb(255, 255, 255);
+}
+
+.y.y-select-menu-empty {
+    color: rgb(153, 153, 153);
+    text-align: center;
+    box-sizing: border-box;
+    padding: 8px 12px;
 }
