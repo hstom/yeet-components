@@ -1,40 +1,15 @@
 import React from 'react';
-import { buildGenericThemableComponent } from '../../util.js';
+import { getGenericThemableSubcomponentBuilder } from '../../util.js';
 import './YSelectComponents.css';
 
-export const ThemableYSelectMenu = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menu || {}),
-    displayName: 'YSelectMenu'
-});
+const genSubcomponent = getGenericThemableSubcomponentBuilder('y select menu', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
-export const ThemableYSelectMenuList = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-list',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuList || {}),
-    displayName: 'YSelectMenuList'
-});
-
-export const ThemableYSelectMenuOption = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-option',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuOption || {}),
-    displayName: 'YSelectMenuOption',
-    forwardRef: true
-});
-
-export const ThemableYSelectMenuEmpty = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-menu-empty',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).menuEmpty || {}),
-    displayName: 'YSelectMenuEmpty'
-});
+export const ThemableYSelectMenuOption = genSubcomponent('option', {forwardRef: true});
 
 export const ThemableYSelectMenuContainer = globalTheme => {
-    const Menu = ThemableYSelectMenu(globalTheme);
-    const MenuList = ThemableYSelectMenuList(globalTheme);
-    const MenuEmpty = ThemableYSelectMenuEmpty(globalTheme);
+    const Menu = genSubcomponent()(globalTheme);
+    const MenuList = genSubcomponent('list')(globalTheme);
+    const MenuEmpty = genSubcomponent('empty')(globalTheme);
 
     const YSelectValueComponent = ({
         menuOpen,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { buildGenericThemableComponent } from '../../util.js';
+import {getGenericThemableSubcomponentBuilder} from '../../util.js';
 import {ThemableYSelectValueContainer} from './YSelectValueContainer.js';
 import {ThemableYSelectIndicatorContainer} from './YSelectIndicatorContainer.js';
 import {ThemableYSelectMenuContainer, ThemableYSelectMenuOption} from './YSelectMenuContainer.js';
@@ -10,25 +10,14 @@ import './YSelectComponents.css';
  * TODO LIST:
  * highlighted index should target selected element on menuopen
  * memoize filter of options for performance
+ * remove this.state.selected and require orchestration
  */
-export const ThemableYSelectWrapper = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-wrapper',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).wrapper || {}),
-    displayName: 'YSelectWrapper',
-    forwardRef: true
-});
 
-export const ThemableYSelectStage = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-stage',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).stage || {}),
-    displayName: 'YSelectStage'
-});
+const genSubcomponent = getGenericThemableSubcomponentBuilder('y select', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
 export const ThemableYSelect = globalTheme => {
-    const Wrapper = ThemableYSelectWrapper(globalTheme);
-    const Stage = ThemableYSelectStage(globalTheme);
+    const Wrapper = genSubcomponent('', {forwardRef: true})(globalTheme);
+    const Stage = genSubcomponent('stage')(globalTheme);
 
     const ValueContainer = ThemableYSelectValueContainer(globalTheme);
     const IndicatorContainer = ThemableYSelectIndicatorContainer(globalTheme);
@@ -172,6 +161,7 @@ export const ThemableYSelect = globalTheme => {
                 placeholder = 'Select...',
                 clearable = true,
                 searchable = true,
+                noIndicators = false,
                 onChange, // strip out
                 ...rest
             } = this.props;
@@ -212,12 +202,12 @@ export const ThemableYSelect = globalTheme => {
                         searchString={this.state.searchString}
                         ref={this.inputRef}
                     />
-                    <IndicatorContainer
+                    {!noIndicators && <IndicatorContainer
                         selected={this.state.selected}
                         clearable={clearable}
                         clearSelection={this.clearSelection}
                         toggleMenu={this.toggleMenu}
-                    />
+                    />}
                 </Stage>
                 <Menu
                     menuOpen={this.state.menuOpen}

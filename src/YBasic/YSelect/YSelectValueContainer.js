@@ -1,103 +1,33 @@
 import React from 'react';
-import { buildGenericThemableComponent } from '../../util.js';
-import { clearablePath } from './YSelectSVGs.js';
+import { getGenericThemableSubcomponentBuilder } from '../../util.js';
+// import { clearablePath } from './YSelectSVGs.js';
 import './YSelectComponents.css';
 
-/**
- * VALUE REGION
- */
+const genSubcomponent = getGenericThemableSubcomponentBuilder('y select value', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
-export const ThemableYSelectValueContainerWrapper = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-value-container',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valueContainer || {}),
-    displayName: 'YSelectValueContainer'
-});
-
-export const ThemableYSelectMultiValueButton = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-multi-value-button',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).multiValueButton || {}),
-    displayName: 'YSelectMutliValueButton'
-});
-
-export const ThemableYSelectMultiValueLabel = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-multi-value-label',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).multiValueLabel || {}),
-    displayName: 'YSelectMutliValueLabel'
-});
-
-export const ThemableYSelectMultiValueRemove = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-multi-value-remove',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).multiValueRemove || {}),
-    displayName: 'YSelectMutliValueRemove'
-});
-
-export const ThemableYSelectMultiValueRemoveSVG = buildGenericThemableComponent({
-    Tag: 'svg',
-    componentClassName: 'y-select-multi-value-remove-svg',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).multiValueRemoveSVG || {}),
-    displayName: 'YSelectMutliValueRemoveSVG',
-    propMutator: () => ({
-        height: '20px',
-        width: '20px',
-        viewBox: '0 0 20 20',
-        'aria-hidden': true,
-        focusable: false,
-        children: <path d={clearablePath}></path>
-    })
-});
-
-export const ThemableYSelectValuePlaceholder = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-value-placeholder',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valuePlaceholder || {}),
-    displayName: 'YSelectValuePlaceholder'
-});
-
-export const ThemableYSelectValueSingleValue = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-value-single-value',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valueSingleValue || {}),
-    displayName: 'YSelectValueSingleValue'
-});
-
-/**
- * INPUT REGION
- */
-
-export const ThemableYSelectValueInputWrapper = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-value-input-wrapper',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valueInputWrapper || {}),
-    displayName: 'YSelectValueInputWrapper'
-});
-
-export const ThemableYSelectValueInputStage = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-select-value-input-stage',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valueInputStage || {}),
-    displayName: 'YSelectValueInputStage'
-});
-
-export const ThemableYSelectValueInput = buildGenericThemableComponent({
-    Tag: 'input',
-    componentClassName: 'y-select-value-input',
-    themeSelector: (globalTheme) => (((globalTheme.YBasic || {}).YSelect || {}).valueInput || {}),
-    displayName: 'YSelectValueInput',
-    forwardRef: true
-});
+// export const ThemableYSelectMultiValueButton = genSubcomponent('multi button');
+// export const ThemableYSelectMultiValueLabel = genSubcomponent('multi button label');
+// export const ThemableYSelectMultiValueRemove = genSubcomponent('multi button remove');
+// export const ThemableYSelectMultiValueRemoveSVG = genSubcomponent('multi button remove svg', {
+//     Tag: 'svg',
+//     propMutator: () => ({
+//         height: '20px',
+//         width: '20px',
+//         viewBox: '0 0 20 20',
+//         'aria-hidden': true,
+//         focusable: false,
+//         children: <path d={clearablePath}></path>
+//     })
+// });
 
 export const ThemableYSelectValueContainer = globalTheme => {
-    const ValueContainer = ThemableYSelectValueContainerWrapper(globalTheme);
-    const ValuePlaceholder = ThemableYSelectValuePlaceholder(globalTheme);
-    const ValueSingleValue = ThemableYSelectValueSingleValue(globalTheme);
+    const ValueContainer = genSubcomponent('container')(globalTheme);
+    const ValuePlaceholder = genSubcomponent('placeholder')(globalTheme);
+    const ValueSingleValue = genSubcomponent('single value')(globalTheme);
 
-    const ValueInputWrapper = ThemableYSelectValueInputWrapper(globalTheme);
-    const ValueInputStage = ThemableYSelectValueInputStage(globalTheme);
-    const ValueInput = ThemableYSelectValueInput(globalTheme);
+    const ValueInputWrapper = genSubcomponent('input wrapper')(globalTheme);
+    const ValueInputStage = genSubcomponent('input stage')(globalTheme);
+    const ValueInput = genSubcomponent('input', {Tag: 'input', forwardRef: true})(globalTheme);
 
     const YSelectValueComponent = ({
         menuOpen,
@@ -138,34 +68,30 @@ export const ThemableYSelectValueContainer = globalTheme => {
                 {options.filter(o => o.value === selected)[0].label}
             </ValueSingleValue>
         )}
-        
-        {/* TODO fix tab into */}
-            <ValueInputWrapper> 
-                <ValueInputStage>
-                    <ValueInput
-                        autoCapitalize='none'
-                        autoComplete='off'
-                        autoCorrect='off'
-                        spellCheck='false'
-                        tabIndex={tabindex}
-                        type='text'
-                        aria-autocomplete='list'
-                        value={searchString}
-                        ref={forwardedRef}
-                        onChange={onChange}
-                        onKeyDown={onKeyDown}
-                        onFocus={() => {
-                            if(!menuOpen) {
-                                console.log('tab beep');
-                                toggleMenu();
-                            }
-                        }} 
-                        onClick={(e) => {e.stopPropagation(); return false;}}
-                        style={{opacity: (searchable && menuOpen) ? '1' : '0'}}
-                    ></ValueInput>
-                </ValueInputStage>
-            </ValueInputWrapper>
-        
+        <ValueInputWrapper> 
+            <ValueInputStage>
+                <ValueInput
+                    autoCapitalize='none'
+                    autoComplete='off'
+                    autoCorrect='off'
+                    spellCheck='false'
+                    tabIndex={tabindex}
+                    type='text'
+                    aria-autocomplete='list'
+                    value={searchString}
+                    ref={forwardedRef}
+                    onChange={onChange}
+                    onKeyDown={onKeyDown}
+                    onFocus={() => {
+                        if(!menuOpen) {
+                            toggleMenu();
+                        }
+                    }} 
+                    onClick={(e) => {e.stopPropagation(); return false;}}
+                    style={{opacity: (searchable && menuOpen) ? '1' : '0'}}
+                ></ValueInput>
+            </ValueInputStage>
+        </ValueInputWrapper>
     </ValueContainer>);
 
     YSelectValueComponent.displayName = 'YSelectValueContainer';

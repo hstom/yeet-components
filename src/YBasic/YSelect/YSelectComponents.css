@@ -1,4 +1,4 @@
-.y.y-select-wrapper {
+.y.y-select {
     position: relative;
     box-sizing: border-box;
 }
@@ -46,7 +46,7 @@
     height: 38px;
 }
 
-.y.y-select-multi-value-button {
+.y.y-select-value-multi-button {
     background-color: rgb(230, 230, 230);
     display: flex;
     min-width: 0px;
@@ -55,7 +55,7 @@
     margin: 2px;
 }
 
-.y.y-select-multi-value-label {
+.y.y-select-value-multi-button-label {
     color: rgb(51, 51, 51);
     font-size: 85%;
     overflow: hidden;
@@ -66,7 +66,7 @@
     padding: 3px 3px 3px 6px;
 }
 
-.y.y-select-multi-value-remove {
+.y.y-select-value-multi-button-remove {
     -webkit-box-align: center;
     align-items: center;
     display: flex;
@@ -77,19 +77,19 @@
     cursor: pointer;
 }
 
-.y.y-select-multi-value-remove:hover {
+.y.y-select-value-multi-button-remove:hover {
     background-color: rgb(255, 189, 173);
     color: rgb(222, 53, 11);
 }
 
-.y.y-select-multi-value-remove-svg {
+.y.y-select-value-multi-button-remove-svg {
     display: inline-block;
     fill: currentColor;
     line-height: 1;
     stroke: currentColor;
     stroke-width: 0;
 }
-.y.y-select-multi-value-remove-svg:hover {
+.y.y-select-value-multi-button-remove-svg:hover {
     filter: drop-shadow(4px 4px 9px black);
 }
 
@@ -144,6 +144,8 @@
     padding: 0px;
     color: inherit;
     height: 29px;
+    color: rgb(51, 51, 51);
+    
 }
 
 .y.y-select-indicator-container {
@@ -189,6 +191,7 @@
     color: rgb(153, 153, 153);
 }
 
+.y.y-select-indicator-clearable-svg,
 .y.y-select-indicator-dropdown-svg {
     display: inline-block;
     fill: currentColor;
@@ -196,7 +199,7 @@
     stroke: currentColor;
     stroke-width: 0;
 }
-
+.y.y-select-indicator-clearable-svg:hover,
 .y.y-select-indicator-dropdown-svg:hover {
     filter: drop-shadow(4px 4px 9px black);
 }
@@ -247,6 +250,7 @@
     box-sizing: border-box;
     padding: 8px 12px;
     cursor: pointer;
+    color: rgb(51, 51, 51);
 }
 
 .y.y-select-menu-option.highlighted,

@@ -1,24 +1,12 @@
 import React from 'react';
-import { buildGenericThemableComponent } from '../../util.js';
+import { getGenericThemableSubcomponentBuilder } from '../../util.js';
 import './YModal.css';
 
-const ThemableYModalWrapper = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-modal',
-    themeSelector: globalTheme => ((globalTheme.YBasic || {}).YModal || {}),
-    displayName: 'YModal'
-});
-
-const ThemableYModalChild = buildGenericThemableComponent({
-    Tag: 'div',
-    componentClassName: 'y-modal-child',
-    themeSelector: globalTheme => (((globalTheme.YBasic || {}).YModal || {}).child || {}),
-    displayName: 'YModalChild'
-});
+const genSubcomponent = getGenericThemableSubcomponentBuilder('y modal', globalTheme => ((globalTheme.YBasic || {}).YModal || {}));
 
 export const ThemableYModal = globalTheme => {
-    const ThemedYModalWrapper = ThemableYModalWrapper(globalTheme);
-    const ThemedYModalChild = ThemableYModalChild(globalTheme);
+    const ThemedYModalWrapper = genSubcomponent()(globalTheme);
+    const ThemedYModalChild = genSubcomponent('child')(globalTheme);
 
     return ({
         style = {},

@@ -18,6 +18,7 @@ i work with the keyboard too
     clearable={true || 'default'}
     placeholder ={'Select...' || 'default'}
     searchable={true || 'default'}
+    noIndicators={false && 'default'}
     options={Array(200) // array of {value, label}
     .fill().map((_, i) => ({value: i, label: `${i%2==0 ? 'B' : 'Z'}${i * 7 % 3 == 0 ? 'ee' : 'oo'}${i%3 == 0 ? 'p' : i%3 == 1 ? 'm' : 'k'}`}))}
     onChange={
