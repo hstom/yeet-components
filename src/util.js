@@ -1,9 +1,44 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 export const catClassName = (...classNames) => {
     return [].concat.apply([],
         classNames.map((className = '') => Array.from(new Set(className.split(' ').filter(z => !!z))))
     ).join(' ');
 };
+
+export const mergeRefs = (...refs) => (elem) => {
+    refs.forEach(ref => {
+        if(typeof ref === 'function') {
+            ref(elem);
+        } else {
+            ref.current = elem;
+        }
+    });
+}
+
+/**
+ * Requires target to bind a wrapperRef;
+ * requires target to have a onOutsideClick method
+ */
+export const outsideClick = (WrappedComponent) => props => {
+    const clickTarget = useRef();
+
+    useEffect(() => {
+        const checkOutsideClick = e => {
+            if(clickTarget.current && clickTarget.current.wrapperRef.current && !clickTarget.current.wrapperRef.current.contains(e.target)) {
+                e.preventDefault();
+                clickTarget.current.onOutsideClick();
+            };
+        }
+
+        document.addEventListener('mousedown', checkOutsideClick, false);
+        return () => {
+            document.removeEventListener('mousedown', checkOutsideClick, false);
+        }
+    }, [clickTarget]);
+
+
+    return  (<WrappedComponent ref={clickTarget} {...props} />);
+}
 
 export const buildGenericThemableComponent = ({
     Tag = 'div',
@@ -51,7 +86,7 @@ export const buildGenericThemableComponent = ({
             });
         }
 
-        const Component = (preProps) => {
+        let Component = (preProps) => {
             const {
                 style = {},
                 className,
@@ -59,6 +94,8 @@ export const buildGenericThemableComponent = ({
                 children,
                 ...props
             } = propMutator(preProps);
+            
+            let { forwardedRef: ref, ...refProps } = props;
             return (
                 <Tag
                     className={catClassName(
@@ -67,13 +104,19 @@ export const buildGenericThemableComponent = ({
                         className
                     )}
                     style={Object.assign({}, defaultStyle, style)}
-                    {...props}
+                    {...({ref})}
+                    {...refProps}
                 >
                     {children}
                 </Tag>
             );
         }
         Component.displayName = displayName;
+        if(forwardRef) {
+            Component = React.forwardRef((props, ref) => {
+                return <Component {...props} forwardedRef={ref} />;
+            });
+        }
         return Component;
 
     }

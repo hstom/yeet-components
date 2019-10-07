@@ -1,5 +1,5 @@
 import React from 'react';
-import {getGenericThemableSubcomponentBuilder} from '../../util.js';
+import {getGenericThemableSubcomponentBuilder, mergeRefs, outsideClick} from '../../util.js';
 import {ThemableYSelectValueContainer} from './YSelectValueContainer.js';
 import {ThemableYSelectIndicatorContainer} from './YSelectIndicatorContainer.js';
 import {ThemableYSelectMenuContainer, ThemableYSelectMenuOption} from './YSelectMenuContainer.js';
@@ -8,8 +8,6 @@ import './YSelectComponents.css';
 /**
  * 
  * TODO LIST:
- * highlighted index should target selected element on menuopen
- * memoize filter of options for performance
  * remove this.state.selected and require orchestration
  */
 
@@ -29,10 +27,9 @@ export const ThemableYSelect = globalTheme => {
         constructor(props) {
             super(props);
 
-            this.ref = React.createRef();
-            this.inputRef = React.createRef();
+            this.wrapperRef = React.createRef();
+            this.inputRef = React.createRef(); // TODO: replace with virtual ref that just focuses on bind, but how to tab in?
             this.highlightedRef = React.createRef();
-            this.selectedRef = React.createRef();
 
             this.state = {
                 menuOpen: false,
@@ -42,43 +39,48 @@ export const ThemableYSelect = globalTheme => {
             }
         }
 
-        componentDidMount() {
-            document.addEventListener('mousedown', this.closeOnOutsideClick, false);
+        onOutsideClick = () => {
+            if(this.state.menuOpen) {
+                this.setState({
+                    menuOpen: false,
+                    searchString: ''
+                },
+                this.syncInputFocusState
+                );
+            };
         }
 
-        componentWillUnmount() {
-            document.removeEventListener('mousedown', this.closeOnOutsideClick, false);
-        }
-
-        closeOnOutsideClick = e => {
-            if(this.ref.current && !this.ref.current.contains(e.target) && this.state.menuOpen){
-                this.setState({menuOpen: false, searchString: ''}, () => this.inputRef.current && this.inputRef.current.blur());
+        syncInputFocusState = () => {
+            if(this.inputRef.current) {
+                if(this.state.menuOpen) {
+                    this.inputRef.current.focus();
+                } else {
+                    this.inputRef.current.blur();
+                }
             }
-        };
+        }
 
         toggleMenu = () => {
-            let exitState;
             this.setState(
-                ({menuOpen, searchString, ...rest}) => Object.assign(
-                    {},
-                    rest,
-                    {
-                        menuOpen: exitState = !menuOpen,
-                        searchString: !menuOpen ? searchString : '',
-                        highlightIndex: this.getIndexOfSelectedMenuOptionOrNull(!menuOpen ? searchString : '') // auto-highlight selected option
-                    }
-                ),
-                () => {
-                    if(exitState && this.selectedRef.current) {
-                        this.selectedRef.current.parentNode.scrollTop = this.selectedRef.current.offsetTop;
-                    }
-                    this.inputRef.current && (exitState ? this.inputRef.current.focus() : this.inputRef.current.blur())
-                }
+                ({menuOpen, searchString, ...rest}) => {
+                    const nextSearchString = !menuOpen ? searchString : '';
+                    return Object.assign(
+                        {},
+                        rest,
+                        {
+                            menuOpen: !menuOpen,
+                            searchString: nextSearchString,
+                            highlightIndex: this.getIndexOfSelectedMenuOptionOrNull(nextSearchString) // auto-highlight selected option
+                        }
+                    )
+                },
+                this.syncInputFocusState
         )};
 
-        selectableMenuOption = value => () => {this.setState(
-            {menuOpen: false, selected: value, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(value));
-        }
+        selectableMenuOption = value => () => this.setState(
+            {menuOpen: false, selected: value, searchString: '', highlightIndex: null}, () => (this.props.onChange || (() => {}))(value)
+        );
+        
 
         clearSelection = () => {
             const wasntNull = this.state.selected !== null;
@@ -96,10 +98,30 @@ export const ThemableYSelect = globalTheme => {
         
         onSearchStringChange = e => this.setState({searchString: e.target.value, highlightIndex: null});
         
-        getMenuOptions = (searchStringForward = this.state.searchString) => this.props.options
-            .filter(({label}) => label.toLowerCase().includes(searchStringForward.toLowerCase()));
+        //Memoized Once
+        getMenuOptions = (() => {
+            let cachedSearchString = '';
+            let cachedOptions = [];
+            let cachedValue = [];
+            return (
+                searchString = '', options = []
+            ) => {
+                if(
+                    searchString === cachedSearchString
+                    && cachedOptions === options
+                    ) {
+                        return cachedValue;
+                    }
+                     else {
+                        cachedSearchString = searchString;
+                        cachedOptions = options;
+                        cachedValue = options.filter(({label}) => label.toLowerCase().includes(searchString.toLowerCase()))
+                        return cachedValue;
+                     }
+            };
+        })();
 
-        getIndexOfSelectedMenuOptionOrNull = (searchStringForward) => this.getMenuOptions().findIndex(o => o.value === this.state.selected) || null;
+        getIndexOfSelectedMenuOptionOrNull = (searchStringForward) => this.getMenuOptions(searchStringForward, this.props.options).findIndex(o => o.value === this.state.selected) || null;
 
         onInputKeyDown = e => {
             const eKey = e.key;
@@ -117,7 +139,7 @@ export const ThemableYSelect = globalTheme => {
                     if(nextIndex < 0) {
                         nextIndex = 0;
                     }
-                    const menuOptionsLength = this.getMenuOptions().length;
+                    const menuOptionsLength = this.getMenuOptions(this.state.searchString, this.props.options).length;
                     if(nextIndex >= menuOptionsLength) {
                         nextIndex = menuOptionsLength - 1;
                     }
@@ -131,9 +153,9 @@ export const ThemableYSelect = globalTheme => {
                 e.preventDefault();
             }
             if(eKey === 'Enter') {
-                const menuOptions = this.getMenuOptions();
+                const menuOptions = this.getMenuOptions(this.state.searchString, this.props.options);
                 if(this.state.highlightIndex !== null && this.state.highlightIndex >= 0 && this.state.highlightIndex < menuOptions.length) {
-                    const selectedOption = this.getMenuOptions()[this.state.highlightIndex];
+                    const selectedOption = this.getMenuOptions(this.state.searchString, this.props.options)[this.state.highlightIndex];
                     this.selectableMenuOption(selectedOption.value)();
                     this.inputRef.current.blur();
                     e.preventDefault();
@@ -155,6 +177,23 @@ export const ThemableYSelect = globalTheme => {
             }
         }
 
+        selectedAndOrHighlightedRef = (selected, highlighted) => {
+            if(selected || highlighted) {
+                return {ref: 
+                    mergeRefs(...[
+                        ...(selected ? [(target) => {
+                            if(target !== null) {
+                                target.parentNode.scrollTop = target.offsetTop;
+                            } // virtual ref isn't actually stored anywhere
+                        }] : []),
+                        ...(highlighted ? [this.highlightedRef] : [])
+                    ])};
+            } else {
+                return {}
+            }
+            
+        }
+
         render() {
             const {
                 options = [],
@@ -162,63 +201,55 @@ export const ThemableYSelect = globalTheme => {
                 clearable = true,
                 searchable = true,
                 noIndicators = false,
-                onChange, // strip out
+                onChange: ignored, // strip out
+                forwardedRef,
                 ...rest
             } = this.props;
 
-            const menuOptions = this.getMenuOptions()
+            const menuOptions = this.getMenuOptions(this.state.searchString, options)
             .map(({value, label}, i) => (
                 <MenuOption 
                     className={(value === this.state.selected ? 'selected' : '') + (i === this.state.highlightIndex ? ' highlighted' : '')}
                     data-value={value} // I'm here for dev tool visibility
                     onClick={this.selectableMenuOption(value)}
                     key={`${value}-${i}`}
-                    {
-                        ...Object.assign(
-                            {},
-                            value === this.state.selected
-                            ? {ref: this.selectedRef}
-                            : {},
-                            i === this.state.highlightIndex
-                            ? {ref: this.highlightedRef}
-                            : {},
-                        )
-                    }
+                    {...this.selectedAndOrHighlightedRef(value === this.state.selected, i === this.state.highlightIndex)}
                 >
                     {label}
                 </MenuOption>));
 
-            return (<Wrapper ref={this.ref}>
-                <Stage {...rest}>
-                    <ValueContainer
+            return (
+                <Wrapper ref={this.wrapperRef}>
+                    <Stage {...rest}>
+                        <ValueContainer
+                            menuOpen={this.state.menuOpen}
+                            toggleMenu={this.toggleMenu}
+                            selected={this.state.selected}
+                            options={options}
+                            placeholder={placeholder}
+                            searchable={searchable}
+                            onChange={this.onSearchStringChange}
+                            onKeyDown={this.onInputKeyDown}
+                            searchString={this.state.searchString}
+                            ref={this.inputRef}
+                        />
+                        {!noIndicators && <IndicatorContainer
+                            selected={this.state.selected}
+                            clearable={clearable}
+                            clearSelection={this.clearSelection}
+                            toggleMenu={this.toggleMenu}
+                        />}
+                    </Stage>
+                    <Menu
                         menuOpen={this.state.menuOpen}
-                        toggleMenu={this.toggleMenu}
-                        selected={this.state.selected}
+                        menuOptions={menuOptions}
                         options={options}
-                        placeholder={placeholder}
-                        searchable={searchable}
-                        onChange={this.onSearchStringChange}
-                        onKeyDown={this.onInputKeyDown}
-                        searchString={this.state.searchString}
-                        ref={this.inputRef}
                     />
-                    {!noIndicators && <IndicatorContainer
-                        selected={this.state.selected}
-                        clearable={clearable}
-                        clearSelection={this.clearSelection}
-                        toggleMenu={this.toggleMenu}
-                    />}
-                </Stage>
-                <Menu
-                    menuOpen={this.state.menuOpen}
-                    menuOptions={menuOptions}
-                    options={options}
-                />
-            </Wrapper>);
+                </Wrapper>);
         }
     }
     YSelectComponent.displayName = 'YSelect';
-    return YSelectComponent;
+    return outsideClick(YSelectComponent);
 }
 
 export default ThemableYSelect();
