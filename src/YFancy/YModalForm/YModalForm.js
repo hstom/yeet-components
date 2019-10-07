@@ -55,6 +55,7 @@ export const ThemableYModalForm = globalTheme => {
             style={style}
             className={catClassName('y-modal-form', className)}
             child={child}
+            onOutsideClick={cancelAction}
             {...props}
         >
             <ThemedYModalFormHeader

@@ -60,6 +60,7 @@ github source: https://github.com/hstom/yeet-components
                 <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd colSpan={2} rowSpan={2} style={{position: 'relative'}}>
                 <YModal
+                    onOutsideClick={() => setState(s => ({count: false}))}
                     style={{
                         position: 'absolute',
                         zIndex: 'unset',

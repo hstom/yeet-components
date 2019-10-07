@@ -19,23 +19,29 @@ export const mergeRefs = (...refs) => (elem) => {
  * Requires target to bind a wrapperRef;
  * requires target to have a onOutsideClick method
  */
-export const outsideClick = (WrappedComponent) => props => {
+export const outsideClick = (WrappedComponent) => ({disableOutsideClick, ...props}) => {
     const clickTarget = useRef();
 
-    useEffect(() => {
-        const checkOutsideClick = e => {
-            if(clickTarget.current && clickTarget.current.wrapperRef.current && !clickTarget.current.wrapperRef.current.contains(e.target)) {
-                e.preventDefault();
-                clickTarget.current.onOutsideClick();
-            };
-        }
+    if(!disableOutsideClick) {
+        useEffect(() => {
+            const checkOutsideClick = e => {
+                if(clickTarget.current && clickTarget.current.wrapperRef.current && !clickTarget.current.wrapperRef.current.contains(e.target)) {
+                    e.preventDefault();
+                    if(clickTarget.current.props.onOutsideClick) {
+                        clickTarget.current.props.onOutsideClick(e);
+                    } else if (clickTarget.current.onOutsideClick) {
+                        clickTarget.current.onOutsideClick(e);
+                    }
+                };
+            }
 
-        document.addEventListener('mousedown', checkOutsideClick, false);
-        return () => {
-            document.removeEventListener('mousedown', checkOutsideClick, false);
-        }
-    }, [clickTarget]);
+            document.addEventListener('mousedown', checkOutsideClick, false);
 
+            return () => {
+                document.removeEventListener('mousedown', checkOutsideClick, false);
+            }
+        }, [clickTarget]);
+    }
 
     return  (<WrappedComponent ref={clickTarget} {...props} />);
 }
@@ -54,6 +60,7 @@ export const buildGenericThemableComponent = ({
             defaultClassName = '',
             excludeComponentDefaultClassName = false,
         } = themeSelector(globalTheme);
+
 
         if(forwardRef) { // TODO inline
             const Component = (preProps) => {
@@ -86,7 +93,7 @@ export const buildGenericThemableComponent = ({
             });
         }
 
-        let Component = (preProps) => {
+        const Component = (preProps) => {
             const {
                 style = {},
                 className,
@@ -95,7 +102,6 @@ export const buildGenericThemableComponent = ({
                 ...props
             } = propMutator(preProps);
             
-            let { forwardedRef: ref, ...refProps } = props;
             return (
                 <Tag
                     className={catClassName(
@@ -104,19 +110,13 @@ export const buildGenericThemableComponent = ({
                         className
                     )}
                     style={Object.assign({}, defaultStyle, style)}
-                    {...({ref})}
-                    {...refProps}
+                    {...props}
                 >
                     {children}
                 </Tag>
             );
         }
         Component.displayName = displayName;
-        if(forwardRef) {
-            Component = React.forwardRef((props, ref) => {
-                return <Component {...props} forwardedRef={ref} />;
-            });
-        }
         return Component;
 
     }

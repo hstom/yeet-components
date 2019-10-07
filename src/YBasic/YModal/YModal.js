@@ -1,35 +1,51 @@
 import React from 'react';
-import { getGenericThemableSubcomponentBuilder } from '../../util.js';
+import { getGenericThemableSubcomponentBuilder, outsideClick } from '../../util.js';
 import './YModal.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y modal', globalTheme => ((globalTheme.YBasic || {}).YModal || {}));
 
 export const ThemableYModal = globalTheme => {
     const ThemedYModalWrapper = genSubcomponent()(globalTheme);
-    const ThemedYModalChild = genSubcomponent('child')(globalTheme);
+    const ThemedYModalChild = genSubcomponent('child', {forwardRef: true})(globalTheme);
 
-    return ({
-        style = {},
-        className = '',
+    class YModal extends React.Component {
+        constructor(props) {
+            super(props);
+            this.wrapperRef = React.createRef();
+        }
 
-        child = {},
+        render() {
+            const {
+                style = {},
+                className = '',
         
-        children,
-        
-        ...props
-    }) => (
-    <ThemedYModalWrapper
-        style={style}
-        className={className}
-        {...props}
-    >
-        <ThemedYModalChild
-            {...child}
-        >
-            {children}
-        </ThemedYModalChild>
-    </ThemedYModalWrapper>
-    );
+                child = {},
+                
+                children,
+
+                onOutsideClick, // omitted
+                
+                ...props
+            } = this.props;
+            
+            return (
+            <ThemedYModalWrapper
+                style={style}
+                className={className}
+                {...props}
+            >
+                <ThemedYModalChild
+                    ref={this.wrapperRef} // This wraps the content, the real wrapper is 'outside'
+                    {...child}
+                >
+                    {children}
+                </ThemedYModalChild>
+            </ThemedYModalWrapper>
+            );
+        }
+    }
+
+    return outsideClick(YModal);
 }
 
 const YModal = ThemableYModal();

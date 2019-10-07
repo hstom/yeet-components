@@ -44,13 +44,35 @@ Quality: Sophistication
 		Click me
 		</YButtonPrimary>
 		{count && <YModal
-			childStyle={{width: 'fit-content'}}
+			child={{style: {width: 'fit-content'}}}
 		>Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary></YModal>}
 	</>
 ) }
 </Observe>
 </State>
 </Playground>
+
+### position: fixed (default) with outside click
+<Playground>
+<State initialState={{ count: false }}>
+<Observe>
+{({ count, setState }) => (
+	<>
+		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
+		Click me
+		</YButtonPrimary>
+		{count && <YModal
+			onOutsideClick={() => 
+				setState(s => ({count: false}))
+			}
+			child={{style: {width: 'fit-content'}}}
+		>Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary> or by clicking outside!</YModal>}
+	</>
+) }
+</Observe>
+</State>
+</Playground>
+
 
 ## position: fixed (default) with height overflow
 <Playground>
@@ -79,10 +101,12 @@ Quality: Sophistication
 ## position: absolute;
 <Playground>
 	<div style={{position: 'relative', height: '400px'}}>
-		<YModal style={{
+		<YModal
+		disableOutsideClick
+		style={{
 			position: 'absolute',
 			zIndex: 'unset'
-			}}>More like resolute!</YModal>
+		}}>More like resolute!</YModal>
 	</div>
 </Playground>
 
@@ -90,10 +114,12 @@ Quality: Sophistication
 ## position: absolute; with height overflow
 <Playground>
 	<div style={{position: 'relative', height: '400px'}}>
-		<YModal style={{
-			position: 'absolute',
-			zIndex: 'unset'
-			}}>
+		<YModal
+		disableOutsideClick
+		style={{
+		position: 'absolute',
+		zIndex: 'unset'
+		}}>
 			<div>
 				{Array(100).fill().map((_, i) => <span key={'key'+i}>Wow there's just so many words!</span>)}
 			</div>
