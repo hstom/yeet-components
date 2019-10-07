@@ -29,7 +29,6 @@ export const ThemableYSelect = globalTheme => {
 
             this.wrapperRef = React.createRef();
             this.inputRef = React.createRef(); // TODO: replace with virtual ref that just focuses on bind, but how to tab in?
-            this.highlightedRef = React.createRef();
 
             this.state = {
                 menuOpen: false,
@@ -145,10 +144,6 @@ export const ThemableYSelect = globalTheme => {
                     }
                     
                     return {highlightIndex: nextIndex};
-                }, () => {
-                    if(this.state.highlightIndex !== null && this.highlightedRef.current) {
-                        this.highlightedRef.current.parentNode.scrollTop =this.highlightedRef.current.offsetTop;
-                    }
                 });
                 e.preventDefault();
             }
@@ -182,11 +177,15 @@ export const ThemableYSelect = globalTheme => {
                 return {ref: 
                     mergeRefs(...[
                         ...(selected ? [(target) => {
-                            if(target !== null) {
+                            if(target !== null && this.state.highlightIndex === null) {
                                 target.parentNode.scrollTop = target.offsetTop;
                             } // virtual ref isn't actually stored anywhere
                         }] : []),
-                        ...(highlighted ? [this.highlightedRef] : [])
+                        ...(highlighted ? [(target) => {
+                            if(target != null) {
+                                target.parentNode.scrollTop = target.offsetTop;
+                            }
+                        }] : [])
                     ])};
             } else {
                 return {}
