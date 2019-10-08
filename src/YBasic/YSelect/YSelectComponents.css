@@ -228,6 +228,7 @@
     z-index: 10;
     box-sizing: border-box;
     border-radius: 4px;
+    min-width: fit-content;
 }
 
 .y.y-select-menu-list {

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 export const catClassName = (...classNames) => {
     return [].concat.apply([],
         classNames.map((className = '') => Array.from(new Set(className.split(' ').filter(z => !!z))))
@@ -27,37 +27,6 @@ export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
             document.removeEventListener('mousedown', handleClick, false);
         }
     })
-}
-
-/**
- * Requires target to bind a wrapperRef;
- * requires target to have a onOutsideClick method
- */
-export const outsideClick = (WrappedComponent) => ({disableOutsideClick, ...props}) => {
-    const clickTarget = useRef();
-
-    if(!disableOutsideClick) {
-        useEffect(() => {
-            const checkOutsideClick = e => {
-                if(clickTarget.current && clickTarget.current.wrapperRef.current && !clickTarget.current.wrapperRef.current.contains(e.target)) {
-                    e.preventDefault();
-                    if(clickTarget.current.props.onOutsideClick) {
-                        clickTarget.current.props.onOutsideClick(e);
-                    } else if (clickTarget.current.onOutsideClick) {
-                        clickTarget.current.onOutsideClick(e);
-                    }
-                };
-            }
-
-            document.addEventListener('mousedown', checkOutsideClick, false);
-
-            return () => {
-                document.removeEventListener('mousedown', checkOutsideClick, false);
-            }
-        }, [clickTarget]);
-    }
-
-    return  (<WrappedComponent ref={clickTarget} {...props} />);
 }
 
 export const buildGenericThemableComponent = ({

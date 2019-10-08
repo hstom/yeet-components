@@ -8,9 +8,8 @@ import './YSelectComponents.css';
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y select', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
 /**
- * 
  * TODO LIST:
- * remove this.state.selected and require orchestration
+ * close menu on input ref blur
  */
 export const ThemableYSelect = globalTheme =>  {
     const YSelectComponent = ({
