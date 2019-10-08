@@ -1,5 +1,5 @@
-import React from 'react';
-import { getGenericThemableSubcomponentBuilder, outsideClick } from '../../util.js';
+import React, {useRef} from 'react';
+import { getGenericThemableSubcomponentBuilder, useClickOutsideHandler } from '../../util.js';
 import './YModal.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y modal', globalTheme => ((globalTheme.YBasic || {}).YModal || {}));
@@ -8,14 +8,7 @@ export const ThemableYModal = globalTheme => {
     const ThemedYModalWrapper = genSubcomponent()(globalTheme);
     const ThemedYModalChild = genSubcomponent('child', {forwardRef: true})(globalTheme);
 
-    class YModal extends React.Component {
-        constructor(props) {
-            super(props);
-            this.wrapperRef = React.createRef();
-        }
-
-        render() {
-            const {
+    const YModal =  ({
                 style = {},
                 className = '',
         
@@ -23,29 +16,31 @@ export const ThemableYModal = globalTheme => {
                 
                 children,
 
-                onOutsideClick, // omitted
+                onOutsideClick,
                 
                 ...props
-            } = this.props;
-            
-            return (
-            <ThemedYModalWrapper
-                style={style}
-                className={className}
-                {...props}
-            >
-                <ThemedYModalChild
-                    ref={this.wrapperRef} // This wraps the content, the real wrapper is 'outside'
-                    {...child}
+            }) => {
+                const wrapperRef = useRef();
+                useClickOutsideHandler(wrapperRef, (e) => onOutsideClick && onOutsideClick(e));
+                
+                return (
+                <ThemedYModalWrapper
+                    style={style}
+                    className={className}
+                    {...props}
                 >
-                    {children}
-                </ThemedYModalChild>
-            </ThemedYModalWrapper>
-            );
+                    <ThemedYModalChild
+                        ref={wrapperRef} // This wraps the content, the real wrapper is 'outside'
+                        {...child}
+                    >
+                        {children}
+                    </ThemedYModalChild>
+                </ThemedYModalWrapper>
+                );
         }
-    }
 
-    return outsideClick(YModal);
+    YModal.displayName = 'YModal';
+    return YModal;
 }
 
 const YModal = ThemableYModal();

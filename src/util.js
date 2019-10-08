@@ -15,6 +15,20 @@ export const mergeRefs = (...refs) => (elem) => {
     });
 }
 
+export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
+    const handleClick = e => {
+        if(nodeRef.current && !nodeRef.current.contains(e.target)) {
+            onOutsideClick(e);
+        }
+    }
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClick, false);
+        return () => {
+            document.removeEventListener('mousedown', handleClick, false);
+        }
+    })
+}
+
 /**
  * Requires target to bind a wrapperRef;
  * requires target to have a onOutsideClick method

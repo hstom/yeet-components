@@ -4,8 +4,7 @@ menu: YBasic
 ---
 
 import { Playground } from 'docz';
-import { State, Observe } from "mdx-observable";
-import YSelect from './src/YBasic/YSelect/YSelect.js';
+import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYSelect.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YBasic/YSelect/YSelect.js'
 
@@ -16,7 +15,7 @@ Quality: Sophistication
 ## Single Select
 i work with the keyboard too
 <Playground>
-<YSelect
+<UncontrolledYSelect
     clearable={true || 'default'}
     placeholder ={'Select...' || 'default'}
     searchable={true || 'default'}

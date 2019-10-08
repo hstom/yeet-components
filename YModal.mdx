@@ -4,11 +4,12 @@ menu: YBasic
 ---
 
 import { Playground } from 'docz';
+import {useState} from 'react';
 import YModal from './src/YBasic/YModal/YModal.js';
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
-import { State, Observe } from "mdx-observable";
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YBasic/YModal/YModal.js'
+import FunctionChild from './FunctionChild.js';
 
 Quality: Sophistication
 
@@ -17,105 +18,125 @@ Quality: Sophistication
 
 ## position: fixed;
 
-### position: fixed (default)
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
-	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
-		</YButtonPrimary>
-		{count && <YModal>Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary></YModal>}
-	</>
-) }
-</Observe>
-</State>
+	<FunctionChild>
+		{() => {
+			const [open, setOpen] = useState(false);
+			return (
+			<>
+				<pre style={{margin: 0}}>{'(default)'}</pre>
+				<YButtonPrimary onClick={() => setOpen(!open)}>
+					Click me
+				</YButtonPrimary>
+				{
+					open &&
+					<YModal>
+						Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setOpen(false)}>this button</YButtonPrimary>
+					</YModal>
+				}
+			</>
+			);
+		}}
+	</FunctionChild>
 </Playground>
 
-
-### position: fixed (default) with width: fit-content
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
-	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
-		</YButtonPrimary>
-		{count && <YModal
-			child={{style: {width: 'fit-content'}}}
-		>Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary></YModal>}
-	</>
-) }
-</Observe>
-</State>
+	<FunctionChild>
+		{() => {
+			const [open, setOpen] = useState(false);
+			return (
+			<>
+			<pre style={{margin: 0}}>{'width: fit-content'}</pre>
+				<YButtonPrimary onClick={() => setOpen(!open)}>
+					Click me
+				</YButtonPrimary>
+				{
+					open &&
+					<YModal child={{style: {width: 'fit-content'}}}>
+						Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setOpen(false)}>this button</YButtonPrimary>
+					</YModal>
+				}
+			</>
+			);
+		}}
+	</FunctionChild>
 </Playground>
 
-### position: fixed (default) with outside click
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
-	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
-		</YButtonPrimary>
-		{count && <YModal
-			onOutsideClick={() => 
-				setState(s => ({count: false}))
-			}
-			child={{style: {width: 'fit-content'}}}
-		>Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary> or by clicking outside!</YModal>}
-	</>
-) }
-</Observe>
-</State>
+	<FunctionChild>
+		{() => {
+			const [open, setOpen] = useState(false);
+			return (
+			<>
+				<pre style={{margin: 0}}>{'width: fit-content with outside click'}</pre>
+				<YButtonPrimary onClick={() => setOpen(!open)}>
+					Click me
+				</YButtonPrimary>
+				{
+					open &&
+					<YModal
+						onOutsideClick={() => setOpen(false)}
+						child={{style: {width: 'fit-content'}}}
+					>
+						Hello, I am a basic modal, close me with <YButtonPrimary onClick={() => setOpen(false)}>this button</YButtonPrimary> or by clicking outside!
+					</YModal>
+				}
+			</>
+			);
+		}}
+	</FunctionChild>
 </Playground>
 
-
-## position: fixed (default) with height overflow
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
-	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
-		</YButtonPrimary>
-		{count && <YModal>
-			Hello, I am a basic modal,
-			<div>
-				{Array(100).fill().map((_, i) => <span key={'key'+i}>and I'm just way too verbose</span>)}
-			</div>
-			{Array(100).fill().map((_, i) => <div key={'key'+i}>and I'm just way too verbose</div>)}
-			, close me with
-			
-			<YButtonPrimary onClick={() => setState(s => ({count: false}))}>this button</YButtonPrimary></YModal>}
-	</>
-) }
-</Observe>
-</State>
+	<FunctionChild>
+		{() => {
+			const [open, setOpen] = useState(false);
+			return (
+			<>
+				<pre style={{margin: 0}}>{'with height overflow'}</pre>
+				<YButtonPrimary onClick={() => setOpen(!open)}>
+					Click me
+				</YButtonPrimary>
+				{
+					open &&
+					<YModal
+						onOutsideClick={() => setOpen(false)}
+						child={{style: {width: 'fit-content'}}}
+					>
+						Hello, I am a basic modal,
+						<div>
+							{Array(100).fill().map((_, i) => <span key={'key'+i}>and I'm just way too verbose</span>)}
+						</div>
+						{Array(100).fill().map((_, i) => <div key={'key'+i}>and I'm just way too verbose</div>)}
+						, close me with
+						<YButtonPrimary onClick={() => setOpen(false)}>this button!</YButtonPrimary>
+					</YModal>
+				}
+			</>
+			);
+		}}
+	</FunctionChild>
 </Playground>
 
 ## position: absolute;
 <Playground>
+	<>
+	<pre style={{margin: 0}}>{'(default))'}</pre>
 	<div style={{position: 'relative', height: '400px'}}>
 		<YModal
-		disableOutsideClick
 		style={{
 			position: 'absolute',
 			zIndex: 'unset'
 		}}>More like resolute!</YModal>
 	</div>
+	</>
 </Playground>
 
-
-## position: absolute; with height overflow
 <Playground>
+	<>
+	<pre style={{margin: 0}}>{'with height overflow'}</pre>
 	<div style={{position: 'relative', height: '400px'}}>
 		<YModal
-		disableOutsideClick
 		style={{
 		position: 'absolute',
 		zIndex: 'unset'
@@ -126,6 +147,7 @@ Quality: Sophistication
 			{Array(100).fill().map((_, i) => <div key={'key'+i}>And just even more!</div>)}
 			</YModal>
 	</div>
+	</>
 </Playground>
 
 # Source

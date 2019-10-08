@@ -263,6 +263,11 @@
     color: rgb(255, 255, 255);
 }
 
+.y-select-menu-option.highlighted.selected,
+.y-select-menu-option.selected:hover {
+    background-color: rgb(0, 64, 148);
+}
+
 .y.y-select-menu-empty {
     color: rgb(153, 153, 153);
     text-align: center;

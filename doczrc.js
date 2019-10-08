@@ -1,5 +1,8 @@
 module.exports = {
 	dest: '/docs',
 	base: '/yeet-components/',
-	title: 'YEET'
+	title: 'YEET',
+	themeConfig: {
+		showPlaygroundEditor: false
+	}
 }

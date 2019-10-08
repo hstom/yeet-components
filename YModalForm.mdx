@@ -3,10 +3,11 @@ name: YModalForm
 menu: YFancy
 ---
 
+import {useState} from 'react';
 import { Playground, Props } from 'docz';
-import { State, Observe } from "mdx-observable";
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+import FunctionChild from './FunctionChild.js';
 
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YFancy/YModalForm/YModalForm.js';
@@ -15,27 +16,31 @@ Quality: Inquiry
 
 # YModalForm
 ---
+
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
+<FunctionChild>
+{() => {
+	const [open, setOpen] = useState(false);
+	return (
 	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
+		<pre style={{margin: 0}}>{'form with default submit, cancel, and outside click'}</pre>
+		<YButtonPrimary onClick={() => setOpen(!open)}>
+			Click me
 		</YButtonPrimary>
-		{count &&
+		{
+			open &&
 			<YModalForm
 				title='Modal Title'
-				submitAction={() => setState(s => ({count: false}))}
-				cancelAction={() => setState(s => ({count: false}))}
+				submitAction={() => setOpen(false)}
+				cancelAction={() => setOpen(false)}
 			>
 				Hello, I am a basic modal, close me with the standard button!
 			</YModalForm>
 		}
 	</>
-) }
-</Observe>
-</State>
+	);
+}}
+</FunctionChild>
 </Playground>
 
 # Source

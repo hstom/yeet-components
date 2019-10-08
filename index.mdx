@@ -4,8 +4,10 @@ route: /
 menu: Docs
 ---
 
-import { State, Observe } from "mdx-observable";
+import {useState} from 'react';
+import FunctionChild from './FunctionChild.js';
 import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
+import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYSelect.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
 import YModal from './src/YBasic/YModal/YModal.js';
 import { YTable, YThead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
@@ -17,9 +19,11 @@ github pages: https://hstom.github.io/yeet-components/
 
 github source: https://github.com/hstom/yeet-components
 
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
+<Playground>
+	<FunctionChild>
+		{() => {
+			const [open, setOpen] = useState(false);
+			return (
 	<>
 		<YTable>
         <YThead>
@@ -31,11 +35,11 @@ github source: https://github.com/hstom/yeet-components
                 <YTh style={{width: '25%'}}>
                     Col B
                 </YTh>
-                <YTh style={{width: '25%'}}>
+                <YTh>
                     Col C
                     <YThSortIndicator className='asc' />
                 </YTh>
-                <YTh resizable={false}>
+                <YTh  style={{width: '25%'}} resizable={false}>
                     Col D
                     <YThSortIndicator className='desc' />
                 </YTh>
@@ -44,14 +48,14 @@ github source: https://github.com/hstom/yeet-components
         <YTBody>
             <YTr>
                 <YTd>
-                    <YButtonPrimary style={{width: '100%'}} onClick={() => setState(s => ({ count: true }))}>
+                    <YButtonPrimary style={{width: '100%'}} onClick={() => setOpen(!open)}>
                         YModalForm example spawned from YButton
                         </YButtonPrimary>
-                        {count &&
+                        {open &&
                             <YModalForm
                                 title='Modal Title'
-                                submitAction={() => setState(s => ({count: false}))}
-                                cancelAction={() => setState(s => ({count: false}))}
+                                submitAction={() => setOpen(false)}
+                                cancelAction={() => setOpen(false)}
                             >
                                 Hello, I am a basic modal, close me with the standard button!
                             </YModalForm>
@@ -60,7 +64,6 @@ github source: https://github.com/hstom/yeet-components
                 <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd colSpan={2} rowSpan={2} style={{position: 'relative'}}>
                 <YModal
-                    onOutsideClick={() => setState(s => ({count: false}))}
                     style={{
                         position: 'absolute',
                         zIndex: 'unset',
@@ -72,14 +75,26 @@ github source: https://github.com/hstom/yeet-components
                 >I don't know why you'd want a partial modal to take up four table cells, but here you go!</YModal>
                 </YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
             <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
-            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
+            <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd style={{overflow: 'visible'}}>
+                <UncontrolledYSelect
+                    clearable={true || 'default'}
+                    placeholder ={'Select...' || 'default'}
+                    searchable={true || 'default'}
+                    noIndicators={false && 'default'}
+                    options={Array(100) // array of {value, label}
+                    .fill().map((_, i) => ({value: i, label: `${i%2==0 ? 'B' : 'Z'}${i * 7 % 3 == 0 ? 'ee' : 'oo'}${i%3 == 0 ? 'p' : i%3 == 1 ? 'm' : 'k'}`}))}
+                    onChange={
+                        value => alert(`Id ${value} selected!`)
+                    }
+                />    
+            </YTd></YTr>
             
         </YTBody>
     </YTable>
 	</>
-) }
-</Observe>
-</State>
+) }}
+</FunctionChild>
+</Playground>
 
 ### YBasic
 These are "basic" components that do not depend on any other component.

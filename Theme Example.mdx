@@ -3,9 +3,10 @@ name: Theme Example
 menu: Theming
 ---
 
+import {useState} from 'react';
 import { Playground } from 'docz';
-import { State, Observe } from "mdx-observable";
-import SourceDisplay from './SourceDisplay';
+import FunctionChild from './FunctionChild.js';
+import SourceDisplay from './SourceDisplay.js';
 import source from '!!raw-loader!./RedThemedYComponents.js'
 import sourceCSS from '!!raw-loader!./RedThemedYComponents.css'
 import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './RedThemedYComponents';
@@ -26,26 +27,29 @@ not sure if this is useful but why not.
 # Themed YModalForm
 
 <Playground>
-<State initialState={{ count: false }}>
-<Observe>
-{({ count, setState }) => (
+<FunctionChild>
+{() => {
+	const [open, setOpen] = useState(false);
+	return (
 	<>
-		<YButtonPrimary onClick={() => setState(s => ({ count: true }))}>
-		Click me
+		<pre style={{margin: 0}}>{'form with default submit, cancel, and outside click'}</pre>
+		<YButtonPrimary onClick={() => setOpen(!open)}>
+			Click me
 		</YButtonPrimary>
-		{count &&
+		{
+			open &&
 			<YModalForm
 				title='Modal Title'
-				submitAction={() => setState(s => ({count: false}))}
-				cancelAction={() => setState(s => ({count: false}))}
+				submitAction={() => setOpen(false)}
+				cancelAction={() => setOpen(false)}
 			>
 				Hello, I am a basic modal, close me with the standard button!
 			</YModalForm>
 		}
 	</>
-) }
-</Observe>
-</State>
+	);
+}}
+</FunctionChild>
 </Playground>
 
 # Themed YTableComponents
