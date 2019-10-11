@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { buildGenericThemableComponent } from '../../util.js';
-import {ThemableYSelect} from '../YSelect/YSelect.js';
+import {YSelect} from '../YSelect/YSelect.js';
 
-export const ThemableYTimePickerStage = buildGenericThemableComponent({
+export const YTimePickerStage = buildGenericThemableComponent({
     Tag: 'div',
     componentClassName: 'y-time-picker',
     themeSelector: (globalTheme) => (globalTheme.YBasic || {}).YTimePicker || {},
@@ -15,57 +15,53 @@ export const ThemableYTimePickerStage = buildGenericThemableComponent({
  * add indicator steppers to yselect
  * externalize DST transition disambiguation
  */
-export const ThemableYTimePicker = globalTheme => {
-    const ThemedYSelect = ThemableYSelect(globalTheme);
-    const ThemedYTimePickerStage = ThemableYTimePickerStage(globalTheme);
 
-    return ({
-        showHour,
-        hour,
+export const YTimePicker = ({
+    showHour,
+    hour,
 
-        showMinute,
-        minute,
+    showMinute,
+    minute,
 
-        showSecond,
-        second,
+    showSecond,
+    second,
 
-        showMillisecond,
-        millisecond,
+    showMillisecond,
+    millisecond,
 
-        military = false,
-        showMilitary,
+    military = false,
+    showMilitary,
 
-        onChange
-    }) => (
-        // FLEXIZE
-        <ThemedYTimePickerStage>
-            <ThemedYSelect
-                placeholder='hour'
-                noIndicators
-                options={Array(military ? 24: 12).fill().map((_, i) => ({value: i + 1, label: ""+(i + 1)}))}
-                style={{display: 'inline-block'}}
-            />
-            <ThemedYSelect
-                placeholder='minute'
-                noIndicators
-                options={Array(60).fill().map((_, i) => ({value: i, label: ""+i}))}
-                style={{display: 'inline-block'}}
-            />
-            <ThemedYSelect
-                placeholder='second'
-                noIndicators
-                options={Array(60).fill().map((_, i) => ({value: i, label: ""+i}))}
-                style={{display: 'inline-block'}}
-            />
-            {!military &&
-            <ThemedYSelect placeholder='AM/PM'
-                noIndicators
-                options={['AM', 'PM'].map(val => ({value: val, label: ""+val}))}
-                style={{display: 'inline-block'}}
-            />
-            }
-        </ThemedYTimePickerStage>
-    )
-}
+    onChange
+}) => (
+    // FLEXIZE
+    <YTimePickerStage>
+        <YSelect
+            placeholder='hour'
+            noIndicators
+            options={Array(military ? 24: 12).fill().map((_, i) => ({value: i + 1, label: ""+(i + 1)}))}
+            style={{display: 'inline-block'}}
+        />
+        <YSelect
+            placeholder='minute'
+            noIndicators
+            options={Array(60).fill().map((_, i) => ({value: i, label: ""+i}))}
+            style={{display: 'inline-block'}}
+        />
+        <YSelect
+            placeholder='second'
+            noIndicators
+            options={Array(60).fill().map((_, i) => ({value: i, label: ""+i}))}
+            style={{display: 'inline-block'}}
+        />
+        {!military &&
+        <YSelect placeholder='AM/PM'
+            noIndicators
+            options={['AM', 'PM'].map(val => ({value: val, label: ""+val}))}
+            style={{display: 'inline-block'}}
+        />
+        }
+    </YTimePickerStage>
+)
 
-export default ThemableYTimePicker();
+export default YTimePicker;

@@ -31,7 +31,7 @@
     border: 1px solid blue;
 }
 
-.y.y-select-value-container {
+.y.y-select-display-container {
     -webkit-box-align: center;
     align-items: center;
     display: flex;
@@ -46,7 +46,7 @@
     height: 38px;
 }
 
-.y.y-select-value-multi-button {
+.y.y-select-display-multi-button {
     background-color: rgb(230, 230, 230);
     display: flex;
     min-width: 0px;
@@ -55,7 +55,7 @@
     margin: 2px;
 }
 
-.y.y-select-value-multi-button-label {
+.y.y-select-display-multi-button-label {
     color: rgb(51, 51, 51);
     font-size: 85%;
     overflow: hidden;
@@ -66,7 +66,7 @@
     padding: 3px 3px 3px 6px;
 }
 
-.y.y-select-value-multi-button-remove {
+.y.y-select-display-multi-button-remove {
     -webkit-box-align: center;
     align-items: center;
     display: flex;
@@ -77,23 +77,23 @@
     cursor: pointer;
 }
 
-.y.y-select-value-multi-button-remove:hover {
+.y.y-select-display-multi-button-remove:hover {
     background-color: rgb(255, 189, 173);
     color: rgb(222, 53, 11);
 }
 
-.y.y-select-value-multi-button-remove-svg {
+.y.y-select-display-multi-button-remove-svg {
     display: inline-block;
     fill: currentColor;
     line-height: 1;
     stroke: currentColor;
     stroke-width: 0;
 }
-.y.y-select-value-multi-button-remove-svg:hover {
+.y.y-select-display-multi-button-remove-svg:hover {
     filter: drop-shadow(4px 4px 9px black);
 }
 
-.y.y-select-value-placeholder {
+.y.y-select-display-placeholder {
     color: rgb(128, 128, 128);
     margin-left: 2px;
     margin-right: 2px;
@@ -104,7 +104,7 @@
     pointer-events: none;
 }
 
-.y.y-select-value-single-value {
+.y.y-select-display-single-value {
     color: rgb(51, 51, 51);
     margin-left: 2px;
     margin-right: 2px;
@@ -118,7 +118,7 @@
     overflow: hidden;
 }
 
-.y.y-select-value-input-wrapper {
+.y.y-select-display-input-wrapper {
     margin: 2px;
     padding-bottom: 2px;
     padding-top: 2px;
@@ -128,12 +128,12 @@
     width: 100%;
 }
 
-.y.y-select-value-input-stage {
+.y.y-select-display-input-stage {
     display: inline-block;
     width: 100%;
 }
 
-.y.y-select-value-input {
+.y.y-select-display-input {
     box-sizing: content-box;
     width: 100%;
     background: 0px center;

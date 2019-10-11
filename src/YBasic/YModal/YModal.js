@@ -4,44 +4,40 @@ import './YModal.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y modal', globalTheme => ((globalTheme.YBasic || {}).YModal || {}));
 
-export const ThemableYModal = globalTheme => {
-    const ThemedYModalWrapper = genSubcomponent()(globalTheme);
-    const ThemedYModalChild = genSubcomponent('child', {forwardRef: true})(globalTheme);
+const Wrapper = genSubcomponent();
+const Child = genSubcomponent('child', {forwardRef: true});
 
-    const YModal =  ({
-                style = {},
-                className = '',
-        
-                child = {},
-                
-                children,
+const YModalComponent =  ({
+    style = {},
+    className = '',
 
-                onOutsideClick,
-                
-                ...props
-            }) => {
-                const wrapperRef = useRef();
-                useClickOutsideHandler(wrapperRef, (e) => onOutsideClick && onOutsideClick(e));
-                
-                return (
-                <ThemedYModalWrapper
-                    style={style}
-                    className={className}
-                    {...props}
-                >
-                    <ThemedYModalChild
-                        ref={wrapperRef} // This wraps the content, the real wrapper is 'outside'
-                        {...child}
-                    >
-                        {children}
-                    </ThemedYModalChild>
-                </ThemedYModalWrapper>
-                );
-        }
+    yChild = {},
+    
+    children,
 
-    YModal.displayName = 'YModal';
-    return YModal;
+    onOutsideClick,
+    
+    ...props
+}) => {
+    const wrapperRef = useRef();
+    useClickOutsideHandler(wrapperRef, (e) => onOutsideClick && onOutsideClick(e));
+    
+    return (
+    <Wrapper
+        style={style}
+        className={className}
+        {...props}
+    >
+        <Child
+            ref={wrapperRef} // This wraps the content, the real wrapper is 'outside'
+            {...yChild}
+        >
+            {children}
+        </Child>
+    </Wrapper>
+    );
 }
 
-const YModal = ThemableYModal();
+YModalComponent.displayName = 'YModal';
+export const YModal = YModalComponent;
 export default YModal;

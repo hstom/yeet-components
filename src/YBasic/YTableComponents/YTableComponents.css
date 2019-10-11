@@ -11,13 +11,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     border: 1px solid #4e4e4e;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .y.y-th {
     position: sticky;
     top: 0;
-    background: #6c7ae0;
+    
+    background: #6c7ae0;/* BLUE */
     text-align: left;
     font-weight: normal;
     font-size: 1.1rem;

@@ -1,26 +1,25 @@
-import {ThemableYButton, ThemableYButtonPrimary, ThemableYButtonSecondary} from './YButton/YButton';
-import {ThemableYModal} from './YModal/YModal';
-import {ThemableYTable} from './YTableComponents/YTable';
-import {ThemableYTbody} from './YTableComponents/YTbody';
-import {ThemableYThead} from './YTableComponents/YThead';
-import {ThemableYTh} from './YTableComponents/YTh';
-import {ThemableYTr} from './YTableComponents/YTr';
-import {ThemableYTd} from './YTableComponents/YTd';
-import {ThemableYThSortIndicator} from './YTableComponents/YThSortIndicator';
+import {YButton, YButtonPrimary, YButtonSecondary} from './YButton/YButton';
+import {YModal} from './YModal/YModal';
+import {YTable} from './YTableComponents/YTable';
+import {YTbody} from './YTableComponents/YTbody';
+import {YThead} from './YTableComponents/YThead';
+import {YTh} from './YTableComponents/YTh';
+import {YTr} from './YTableComponents/YTr';
+import {YTd} from './YTableComponents/YTd';
+import {YThSortIndicator} from './YTableComponents/YThSortIndicator';
 
-export const ThemableYBasic = globalTheme => {
-    return ({
-    YButton: ThemableYButton(globalTheme),
-    YButtonPrimary: ThemableYButtonPrimary(globalTheme),
-    YButtonSecondary: ThemableYButtonSecondary(globalTheme),
-    YModal: ThemableYModal(globalTheme),
-    YTable: ThemableYTable(globalTheme),
-    YThead: ThemableYThead(globalTheme),
-    YTh: ThemableYTh(globalTheme),
-    YTbody: ThemableYTbody(globalTheme),
-    YTr: ThemableYTr(globalTheme),
-    YTd: ThemableYTd(globalTheme),
-    YThSortIndicator: ThemableYThSortIndicator(globalTheme)
-})};
+export const YBasic = ({
+    YButton,
+    YButtonPrimary,
+    YButtonSecondary,
+    YModal,
+    YTable,
+    YThead,
+    YTh,
+    YTbody,
+    YTr,
+    YTd,
+    YThSortIndicator
+});
 
-export default ThemableYBasic;
+export default YBasic;

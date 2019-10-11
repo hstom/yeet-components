@@ -7,32 +7,40 @@ import {useState} from 'react';
 import { Playground } from 'docz';
 import FunctionChild from './FunctionChild.js';
 import SourceDisplay from './SourceDisplay.js';
+
+
+import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
+import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYSelect.js';
+import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
+import YModal from './src/YBasic/YModal/YModal.js';
+import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+
+import RedTheme from './RedThemedYComponents.js';
 import source from '!!raw-loader!./RedThemedYComponents.js'
 import sourceCSS from '!!raw-loader!./RedThemedYComponents.css'
-import { YButtonPrimary, YModalForm, YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './RedThemedYComponents';
-import {YButtonPrimary as UnThemedYButtonPrimary} from './src/YBasic/YButton/YButton.js';
 
 Quality: Inquiry
 
 # Themed YButtonPrimary
 
-<YButtonPrimary> i am red</YButtonPrimary>
+<RedTheme><YButtonPrimary> i am red</YButtonPrimary></RedTheme>
 
 differently themed widgets can be in the same page.
 
-<UnThemedYButtonPrimary>i am not!</UnThemedYButtonPrimary>
+<YButtonPrimary>i am not!</YButtonPrimary>
 
 not sure if this is useful but why not.
 
 # Themed YModalForm
 
 <Playground>
+
 <FunctionChild>
 {() => {
 	const [open, setOpen] = useState(false);
 	return (
-	<>
-		<pre style={{margin: 0}}>{'form with default submit, cancel, and outside click'}</pre>
+	<RedTheme>
+		<pre style={{margin: 0, whiteSpace: 'pre-wrap'}}>{'form with default submit, cancel, and outside click'}</pre>
 		<YButtonPrimary onClick={() => setOpen(!open)}>
 			Click me
 		</YButtonPrimary>
@@ -46,7 +54,7 @@ not sure if this is useful but why not.
 				Hello, I am a basic modal, close me with the standard button!
 			</YModalForm>
 		}
-	</>
+	</RedTheme>
 	);
 }}
 </FunctionChild>
@@ -54,6 +62,8 @@ not sure if this is useful but why not.
 
 # Themed YTableComponents
 <Playground>
+<RedTheme>
+<pre style={{margin: 0, whiteSpace: 'pre-wrap'}}>{'red table in morning sailors take warning red table at night, sailors delight'}</pre>
 <YTable>
 	<YThead><YTr>
 		<YTh>
@@ -69,6 +79,7 @@ not sure if this is useful but why not.
 		<YTr><YTd>that</YTd><YTd>could describe</YTd><YTd>this table</YTd></YTr>
 	</YTbody>
 </YTable>
+</RedTheme>
 </Playground>
 
 # Source

@@ -1,9 +1,9 @@
-import {ThemableYBasic} from './YBasic/YBasic';
-import {ThemableYFancy} from './YFancy/YFancy';
+import {YBasic} from './YBasic/YBasic';
+import {YFancy} from './YFancy/YFancy';
 
-export const ThemableYComponents = globalTheme => ({
-    YBasic: ThemableYBasic(globalTheme),
-    YFancy: ThemableYFancy(globalTheme)
+export const ThemableYComponents = ({
+    YBasic,
+    YFancy
 });
 
-export default ThemableYComponents();
+export default ThemableYComponents;

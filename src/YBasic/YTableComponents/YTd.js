@@ -1,11 +1,11 @@
 import { buildGenericThemableComponent } from '../../util.js';
 import './YTableComponents.css';
 
-export const ThemableYTd = buildGenericThemableComponent({
+export const YTd = buildGenericThemableComponent({
     Tag: 'td',
     componentClassName: 'y-td',
     themeSelector: (globalTheme) => ((globalTheme.YBasic || {}).YTd || {}),
     displayName: 'YTd'
 });
 
-export default ThemableYTd();
+export default YTd;

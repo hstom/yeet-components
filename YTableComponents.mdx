@@ -6,7 +6,7 @@ menu: YBasic
 import {useState, useRef} from 'react';
 import FunctionChild from './FunctionChild.js';
 import { Playground } from 'docz';
-import { YTable, YThead, YTr, YTh, YTBody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
 import SourceDisplay from './SourceDisplay';
 import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
 
@@ -53,7 +53,7 @@ this has an example sortability on the first column.
                     </YTh>
                 </YTr>
             </YThead>
-            <YTBody>
+            <YTbody>
                 {[
                     {key: 3, prefix: 'B'},
                     {key: 73, prefix: 'Z'},
@@ -64,7 +64,7 @@ this has an example sortability on the first column.
                         {['EEP', 'OOP', 'EEP', 'OOP'].map((suffix, i) => <YTd key={suffix + i}>{i === 0 ? elem.key : elem.prefix + suffix}</YTd>)}
                     </YTr>
                 )}
-            </YTBody>
+            </YTbody>
         </YTable>
     </>);
 }}

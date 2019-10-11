@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 export const catClassName = (...classNames) => {
     return [].concat.apply([],
         classNames.map((className = '') => Array.from(new Set(className.split(' ').filter(z => !!z))))
@@ -29,6 +29,8 @@ export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
     })
 }
 
+export const YThemeContext = React.createContext();
+
 export const buildGenericThemableComponent = ({
     Tag = 'div',
     componentClassName = '',
@@ -37,54 +39,23 @@ export const buildGenericThemableComponent = ({
     propMutator = props => props,
     forwardRef = false
 }) => {
-    return (globalTheme = {}) => {
-        const {
-            defaultStyle = {},
-            defaultClassName = '',
-            excludeComponentDefaultClassName = false,
-        } = themeSelector(globalTheme);
-
-
-        if(forwardRef) { // TODO inline
-            const Component = (preProps) => {
-                const {
-                    style = {},
-                    className,
-        
-                    children,
-                    forwardedRef,
-                    ...props
-                } = propMutator(preProps);
-                return (
-                    <Tag
-                        className={catClassName(
-                            (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
-                            defaultClassName,
-                            className
-                        )}
-                        style={Object.assign({}, defaultStyle, style)}
-                        {...props}
-                        ref={forwardedRef}
-                    >
-                        {children}
-                    </Tag>
-                );
-            }
-            Component.displayName = displayName;
-            return React.forwardRef((props, ref) => {
-                return <Component {...props} forwardedRef={ref} />;
-            });
-        }
-
+    if(forwardRef) { // will hang if inlined... why?
         const Component = (preProps) => {
             const {
                 style = {},
                 className,
     
                 children,
+                forwardedRef,
                 ...props
             } = propMutator(preProps);
-            
+
+            const {
+                defaultStyle = {},
+                defaultClassName = '',
+                excludeComponentDefaultClassName = false,
+            } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
+
             return (
                 <Tag
                     className={catClassName(
@@ -94,17 +65,51 @@ export const buildGenericThemableComponent = ({
                     )}
                     style={Object.assign({}, defaultStyle, style)}
                     {...props}
+                    ref={forwardedRef}
                 >
                     {children}
                 </Tag>
             );
         }
         Component.displayName = displayName;
-        return Component;
-
+        return React.forwardRef((props, ref) => {
+            return <Component {...props} forwardedRef={ref} />;
+        });
     }
-}
 
+    const Component = (preProps) => {
+        const {
+            style = {},
+            className,
+
+            children,
+            ...props
+        } = propMutator(preProps);
+
+        const {
+            defaultStyle = {},
+            defaultClassName = '',
+            excludeComponentDefaultClassName = false,
+        } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
+        
+        return (
+            <Tag
+                className={catClassName(
+                    (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
+                    defaultClassName,
+                    className
+                )}
+                style={Object.assign({}, defaultStyle, style)}
+                {...props}
+            >
+                {children}
+            </Tag>
+        );
+    }
+    Component.displayName = displayName;
+    return Component;
+
+}
 
 //const camelCase = spacedString => spacedString.split(' ').map((word, i) => (i === 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.slice(1).toLowerCase()).join('');
 const pascalCase = spacedString => spacedString.split(' ').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join('');
@@ -117,31 +122,42 @@ const kebabCase = spacedString => {
     return result;
 }
 
+/**
+ * Build a themable component with default class names and display names
+ */
 export const buildSimpleGenericThemableComponent = (
     suffix,
     {
         Tag = 'div',
-        themeSelector = () => {},
+        themeSelector = theme => theme,
         propMutator = props => props,
-        forwardRef = false
+        forwardRef = false,
+        displayName = pascalCase(suffix),
+        extraClassNames = []
     } = {}
     ) => buildGenericThemableComponent({
         Tag,
-        componentClassName: kebabCase(suffix),
+        componentClassName: `${kebabCase(suffix)}${extraClassNames.length > 0 ? ' ' : ''}${extraClassNames.join(' ')}`,
         themeSelector,
-        displayName: pascalCase(suffix),
+        displayName,
         propMutator,
         forwardRef
 });
 
+/**
+ * Build a themable subcomponent builder:
+ *   bake in a prefix and then you can just add a suffix for easy themable subcomponents
+ */
 export const getGenericThemableSubcomponentBuilder = (prefix, baseThemeSelector) => (
-    suffix = '', // TODO take vararg of suffixes
+    suffix = '',
     {
         Tag = 'div',
-        themeSelector: subThemeSelector = () => {}, // TODO DEFAULT
+        themeSelector: subThemeSelector = (theme) => theme,
         propMutator = props => props,
         forwardRef = false,
-        noPrefix = false
+        noPrefix = false,
+        extraClassNames = [],
+        displayName
     } = {}
     ) => buildSimpleGenericThemableComponent(
         `${noPrefix ? '' : prefix}${(suffix !== '' && !noPrefix) ? ' ' : ''}${suffix}`,
@@ -151,7 +167,9 @@ export const getGenericThemableSubcomponentBuilder = (prefix, baseThemeSelector)
                 ? (globalTheme => baseThemeSelector(globalTheme) || {})
                 : (globalTheme => subThemeSelector(baseThemeSelector(globalTheme || {}) || {}) || {}),
             propMutator,
-            forwardRef
+            forwardRef,
+            displayName,
+            extraClassNames
         }
 );
 

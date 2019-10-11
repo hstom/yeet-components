@@ -1,33 +1,27 @@
 import React, {useState, useImperativeHandle} from 'react';
-import {ThemableYSelect} from './YSelect.js';
+import {YSelect} from './YSelect.js';
 
 /**
  * This is only used to demo handling the state above the YSelect in YSelect.mdx
  */
-export const ThemableUncontrolledYSelect = globalTheme => {
+const UncontrolledYSelectComponent = ({onChange, ...props}, ref) => {
+    const [selected, setSelected] = useState(null);
+    useImperativeHandle(ref, () => ({
+        value: selected
+    }), [selected]);
 
-    const YSelect = ThemableYSelect(globalTheme);
+    const onChangeHook = v => {
+        setSelected(v);
+        onChange(v);
+    };
 
-    const UncontrolledYSelectComponent = ({onChange, ...props}, ref) => {
-        const [selected, setSelected] = useState(null);
-        useImperativeHandle(ref, () => ({
-            value: selected
-        }), [selected]);
-
-        const onChangeHook = v => {
-            setSelected(v);
-            onChange(v);
-        };
-
-        return (<YSelect
-            selected={selected}
-            onChange={onChangeHook}
-            {...props}
-        />);
-    }
-    UncontrolledYSelectComponent.displayName = 'UncontrolledYSelect';
-    return React.forwardRef(UncontrolledYSelectComponent);
-
+    return (<YSelect
+        selected={selected}
+        onChange={onChangeHook}
+        {...props}
+    />);
 }
+UncontrolledYSelectComponent.displayName = 'UncontrolledYSelect';
+export const UncontrolledYSelect =  React.forwardRef(UncontrolledYSelectComponent);
 
-export default ThemableUncontrolledYSelect();
+export default UncontrolledYSelect;
