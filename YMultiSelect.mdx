@@ -1,0 +1,33 @@
+---
+name: YMultiSelect
+menu: YBasic
+---
+
+import { Playground } from 'docz';
+import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYMultiSelect.js';
+import SourceDisplay from './SourceDisplay';
+import source from '!!raw-loader!./src/YBasic/YSelect/YMultiSelect.js'
+
+Quality: Investigation
+
+# YMultiSelect
+
+## Multi Select
+i work with the keyboard too
+<Playground>
+<UncontrolledYSelect
+    clearable={true || 'default'}
+    placeholder ={'Select...' || 'default'}
+    searchable={true || 'default'}
+    noIndicators={false && 'default'}
+    options={Array(100) // array of {value, label}
+    .fill().map((_, i) => ({value: i, label: `${i%2==0 ? 'B' : 'Z'}${i * 7 % 3 == 0 ? 'ee' : 'oo'}${i%3 == 0 ? 'p' : i%3 == 1 ? 'm' : 'k'}`}))}
+    onChange={
+        value => alert(`Id ${value} selected!`)
+        //() => {} // disable alert
+    }
+/>
+</Playground>
+
+# Source
+<SourceDisplay source={source} />

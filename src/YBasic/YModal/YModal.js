@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import { getGenericThemableSubcomponentBuilder, useClickOutsideHandler } from '../../util.js';
 import './YModal.css';
+import '../../Y.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y modal', globalTheme => ((globalTheme.YBasic || {}).YModal || {}));
 

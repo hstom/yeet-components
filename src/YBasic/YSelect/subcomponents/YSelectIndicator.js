@@ -2,12 +2,13 @@ import React from 'react';
 import { getGenericThemableSubcomponentBuilder } from '../../../util.js';
 import { clearablePath, dropdownPath } from './YSelectSVGs.js';
 import '../YSelectComponents.css';
+import '../../../Y.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y select indicator', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
 const IndicatorContainer = genSubcomponent('container');
 const IndicatorSeparator = genSubcomponent('separator');
-const IndicatorClearable = genSubcomponent('clearable', {Tag: 'button'});
+const IndicatorClearable = genSubcomponent('clearable', {Tag: 'button', extraClassNames: ['padding']});
 const IndicatorClearableSVG = genSubcomponent('clearable svg', {
     Tag: 'svg',
     propMutator: () => ({
@@ -19,7 +20,7 @@ const IndicatorClearableSVG = genSubcomponent('clearable svg', {
         children: <path d={clearablePath}></path>
     })
 });
-const IndicatorDropdown = genSubcomponent('dropdown', {Tag: 'button'});
+const IndicatorDropdown = genSubcomponent('dropdown', {Tag: 'button', extraClassNames: ['padding']});
 const IndicatorDropdownSVG = genSubcomponent('dropdown svg', {
     Tag: 'svg',
     propMutator: () => ({

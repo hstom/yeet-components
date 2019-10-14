@@ -3,6 +3,14 @@ module.exports = {
 	base: '/yeet-components/',
 	title: 'YEET',
 	themeConfig: {
-		showPlaygroundEditor: false
+		showPlaygroundEditor: false,
+		styles: {
+			mainContainer: {
+				maxWidth: '100%'
+			},
+			layout: {
+				maxWidth: '100%'
+			}
+		}
 	}
 }

@@ -13,7 +13,7 @@ import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYSelect.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
 import YModal from './src/YBasic/YModal/YModal.js';
-import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator, YTableScroller } from './src/YBasic/YTableComponents/YTableComponents.js';
 
 import RedTheme from './RedThemedYComponents.js';
 import source from '!!raw-loader!./RedThemedYComponents.js'
@@ -23,18 +23,22 @@ Quality: Inquiry
 
 # Themed YButtonPrimary
 
+<Playground>
 <RedTheme><YButtonPrimary> i am red</YButtonPrimary></RedTheme>
+</Playground>
 
 differently themed widgets can be in the same page.
 
+
+<Playground>
 <YButtonPrimary>i am not!</YButtonPrimary>
+</Playground>
 
 not sure if this is useful but why not.
 
 # Themed YModalForm
 
 <Playground>
-
 <FunctionChild>
 {() => {
 	const [open, setOpen] = useState(false);
@@ -64,6 +68,7 @@ not sure if this is useful but why not.
 <Playground>
 <RedTheme>
 <pre style={{margin: 0, whiteSpace: 'pre-wrap'}}>{'red table in morning sailors take warning red table at night, sailors delight'}</pre>
+<YTableScroller>
 <YTable>
 	<YThead><YTr>
 		<YTh>
@@ -79,6 +84,7 @@ not sure if this is useful but why not.
 		<YTr><YTd>that</YTd><YTd>could describe</YTd><YTd>this table</YTd></YTr>
 	</YTbody>
 </YTable>
+</YTableScroller>
 </RedTheme>
 </Playground>
 

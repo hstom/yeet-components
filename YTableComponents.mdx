@@ -6,9 +6,9 @@ menu: YBasic
 import {useState, useRef} from 'react';
 import FunctionChild from './FunctionChild.js';
 import { Playground } from 'docz';
-import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator, YTableScroller } from './src/YBasic/YTableComponents/YTableComponents.js';
 import SourceDisplay from './SourceDisplay';
-import source from '!!raw-loader!./src/YBasic/YTableComponents/YTable.js'
+import source from '!!raw-loader!./src/YBasic/YTableComponents/YTableComponents.js'
 
 Quality: Sophistication
 
@@ -23,7 +23,7 @@ this has an example sortability on the first column.
     {/* const [sort, setSort] = useState(undefined); */}
     const sort = useRef(undefined);
     const [sortClass, setSortClass] = useState('');
-    return (<>
+    return (<YTableScroller>
         <YTable>
             <YThead>
                 <YTr>
@@ -66,7 +66,7 @@ this has an example sortability on the first column.
                 )}
             </YTbody>
         </YTable>
-    </>);
+    </YTableScroller>);
 }}
 </FunctionChild>
 </Playground>

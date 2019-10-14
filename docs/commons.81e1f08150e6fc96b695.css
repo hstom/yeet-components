@@ -1,0 +1,1 @@
+.y{font-size:9px}.y.padding{padding:1px}.y.big-padding{padding:3px}@media screen and (min-width:300px){.y{font-size:calc(9px + 9*(100vw - 300px)/700)}.y.padding{padding:calc(1px + 3*(100vw - 300px)/700)}.y.big-padding{padding:calc(3px + 7*(100vw - 300px)/700)}}@media screen and (min-width:1000px){.y{font-size:18px}.y.padding{padding:4px}.y.big-padding{padding:10px}}

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../Y.css';
 
 import { buildGenericThemableComponent } from '../../util.js';
 import {YSelect} from '../YSelect/YSelect.js';

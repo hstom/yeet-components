@@ -3,6 +3,7 @@ import {YModal} from '../../YBasic/YModal/YModal.js';
 import {YButtonPrimary, YButtonSecondary} from '../../YBasic/YButton/YButton';
 import {catClassName, getGenericThemableSubcomponentBuilder} from '../../util.js';
 import './YModalForm.css';
+import '../../Y.css';
 
 const getSubcomponent = getGenericThemableSubcomponentBuilder('y modal form', globalTheme => (globalTheme.YBasic || {}).YModalForm || {});
 

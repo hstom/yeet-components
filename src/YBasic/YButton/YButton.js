@@ -1,5 +1,6 @@
 import { getGenericThemableSubcomponentBuilder } from '../../util.js';
 import './YButton.css';
+import '../../Y.css';
 
 const getGenericButton = getGenericThemableSubcomponentBuilder('y button', globalTheme => ((globalTheme.YBasic || {}).YButton || {}))
 

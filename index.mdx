@@ -10,7 +10,8 @@ import { YButtonPrimary } from './src/YBasic/YButton/YButton.js';
 import UncontrolledYSelect from './src/YBasic/YSelect/UncontrolledYSelect.js';
 import YModalForm from './src/YFancy/YModalForm/YModalForm.js';
 import YModal from './src/YBasic/YModal/YModal.js';
-import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator } from './src/YBasic/YTableComponents/YTable.js';
+import './src/YBasic/responsive.css';
+import { YTable, YThead, YTr, YTh, YTbody, YTd, YThSortIndicator, YTableScroller } from './src/YBasic/YTableComponents/YTableComponents.js';
 
 # UI Library for iconoclasts
 
@@ -24,6 +25,7 @@ github source: https://github.com/hstom/yeet-components
 			const [open, setOpen] = useState(false);
 			return (
 	<>
+        <YTableScroller>
 		<YTable>
         <YThead>
             <YTr>
@@ -87,9 +89,16 @@ github source: https://github.com/hstom/yeet-components
                     }
                 />    
             </YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             
         </YTbody>
     </YTable>
+    </YTableScroller>
 	</>
 ) }}
 </FunctionChild>

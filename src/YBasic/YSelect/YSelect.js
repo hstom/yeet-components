@@ -4,6 +4,7 @@ import {YSelectDisplay} from './subcomponents/YSelectDisplay.js';
 import {YSelectIndicator} from './subcomponents/YSelectIndicator.js';
 import {YSelectMenu, YSelectMenuOption} from './subcomponents/YSelectMenu.js';
 import './YSelectComponents.css';
+import '../../Y.css';
 
 const genSubcomponent = getGenericThemableSubcomponentBuilder('y select', globalTheme => ((globalTheme.YBasic || {}).YSelect || {}));
 
@@ -54,44 +55,47 @@ const YSelectComponent = ({
         [searchString, options]
     );
 
-    const scrollBack = useCallback(node => {
-        if(node !== null) { // TODO add necessity check
-            if(node.scrollIntoViewIfNeeded) {
-                node.scrollIntoViewIfNeeded();
-            } else {
-                node.parentNode.scrollTop = node.offsetTop;
+    const scrollBack = useCallback(
+        node => {
+            if(node !== null) {
+                if(node.scrollIntoViewIfNeeded) {
+                    node.scrollIntoViewIfNeeded();
+                } else {
+                    node.parentNode.scrollTop = node.offsetTop;
+                }
             }
-        }
-    }, []);
-
-    const lastKeyTime = useRef(new Date().getTime());
+        },
+        []
+    );
 
     const onArrow = eKey => {
-        const keyTime = new Date().getTime();
-        if((keyTime - lastKeyTime.current) > 30) {
-            let nextIndex = 0;
-            if(kbIndex !== null){
-                if(eKey === 'ArrowDown') {
-                    nextIndex = kbIndex + 1;
+        setTimeout(
+            () => setKbIndex(
+                lastIndex => {
+                    let nextIndex = 0;
+                    if(lastIndex !== null){
+                        if(eKey === 'ArrowDown') {
+                            nextIndex = lastIndex + 1;
+                        }
+                        if(eKey === 'ArrowUp') {
+                            nextIndex = lastIndex - 1;
+                        }
+                    } else if(selected !== null){
+                        nextIndex = filteredOptions.findIndex(option => option.value === selected)
+                    }
+                    if(nextIndex < 0) {
+                        nextIndex = filteredOptions.length - 1;
+                    }
+                    if(nextIndex >= filteredOptions.length) {
+                        nextIndex = 0;
+                    }
+                    return nextIndex;
                 }
-                if(eKey === 'ArrowUp') {
-                    nextIndex = kbIndex - 1;
-                }
-            }
-            if(nextIndex < 0) {
-                nextIndex = filteredOptions.length - 1;
-            }
-            if(nextIndex >= filteredOptions.length) {
-                nextIndex = 0;
-            }
-            if(kbIndex !== nextIndex){
-                setTimeout(() => setKbIndex(nextIndex), 0);
-            }
-            lastKeyTime.current = keyTime;
-        } else {
-            console.log('skipped'); // remove throttler?
-        }
+            ),
+            0
+        );
     }
+
     const keyHandlers = {
         ArrowDown: onArrow,
         ArrowUp: onArrow,
@@ -99,7 +103,9 @@ const YSelectComponent = ({
             if(kbIndex !== null && kbIndex >= 0 && kbIndex < filteredOptions.length) {
                 const selectedValue = filteredOptions[kbIndex].value;
                 closeMenu();
-                onChange(selectedValue);
+                if(selectedValue !== selected) {
+                    onChange(selectedValue);
+                }
                 inputRef.current && inputRef.current.blur();
             } else {
                 setKbIndex(0);
@@ -135,26 +141,30 @@ const YSelectComponent = ({
 
     const onSearchStringChange = e => setSearchString(e.target.value);
 
-    const menuOptions = useMemo(() => filteredOptions  // TODO memoize
-        .map(({value, label}, i) => (
-            <YSelectMenuOption // TODO replace with React.memo
-                {...yOption}
-                className={(value === selected ? 'selected' : '') + (i === kbIndex ? ' highlighted' : '')}
-                data-value={value} // I'm here for dev tool visibility
-                onClick={() => {closeMenu(); selected !== value && onChange(value);}}
-                key={`${value}-${i}`}
-                {...(
-                    (selected, highlighted) => {
-                        if((selected && kbIndex === null) || highlighted) {
-                            return {ref: scrollBack};
-                        } else {
-                            return {}
-                        }
-                    })(value === selected, i === kbIndex)
-                }
-            >
-                {label}
-            </YSelectMenuOption>)), [filteredOptions, kbIndex, onChange, selected, yOption, scrollBack]);
+    const menuOptions = useMemo(
+        () => filteredOptions
+            .map(
+                ({value, label}, i) => (
+                <YSelectMenuOption
+                    {...yOption}
+                    className={(value === selected ? 'selected' : '') + (i === kbIndex ? ' highlighted' : '')}
+                    data-value={value} // I'm here for dev tool visibility
+                    onClick={() => {closeMenu(); selected !== value && onChange(value);}}
+                    key={`${value}-${i}`}
+                    {...(
+                        (selected, highlighted) => {
+                            if((selected && kbIndex === null) || highlighted) {
+                                return {ref: scrollBack};
+                            } else {
+                                return {}
+                            }
+                        })(value === selected, i === kbIndex)
+                    }
+                >
+                    {label}
+                </YSelectMenuOption>)),
+        [filteredOptions, kbIndex, onChange, selected, yOption, scrollBack]
+    );
 
     return (
         <Wrapper {...yWrapper} ref={wrapperRef}>
