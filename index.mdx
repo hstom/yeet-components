@@ -50,7 +50,7 @@ github source: https://github.com/hstom/yeet-components
             <YTr>
                 <YTd>
                     <YButtonPrimary style={{width: '100%'}} onClick={() => setOpen(!open)}>
-                        YModalForm example spawned from YButton
+                        YModalForm example spawned from YButton {`${open}`}
                         </YButtonPrimary>
                         {open &&
                             <YModalForm
@@ -62,20 +62,23 @@ github source: https://github.com/hstom/yeet-components
                             </YModalForm>
                         }
                 </YTd>
-                <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
-            <YTr><YTd colSpan={2} rowSpan={2} style={{position: 'relative'}}>
-                <YModal
-                    style={{
-                        position: 'absolute',
-                        zIndex: 'unset',
-                        whiteSpace: 'normal'
+                <YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd>
+            </YTr>
+            <YTr>
+                <YTd colSpan={2} rowSpan={2} style={{position: 'relative'}}>
+                    <YModal
+                        style={{
+                            position: 'absolute',
+                            whiteSpace: 'normal'
+                            }}
+                        child={{
+                            style: { padding: '5px 15px'}
                         }}
-                    child={{
-                        style: { padding: '5px 15px'}
-                    }}
-                >I don't know why you'd want a partial modal to take up four table cells, but here you go!</YModal>
-                </YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd></YTr>
-            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+                    >I don't know why you'd want a partial modal to take up four table cells, but here you go!
+                    </YModal>
+                </YTd><YTd>ZEEP</YTd><YTd>ZOOP</YTd>
+            </YTr>
+            <YTr><YTd style={{display: 'none'}} /* colspan proxy *//><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd>ZEEP</YTd><YTd>ZOOP</YTd><YTd>ZEEP</YTd><YTd style={{overflow: 'visible'}}>
                 <UncontrolledYSelect
                     clearable={true || 'default'}
@@ -89,6 +92,13 @@ github source: https://github.com/hstom/yeet-components
                     }
                 />    
             </YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
+            <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
             <YTr><YTd>BEEP</YTd><YTd>BOOP</YTd><YTd>BEEP</YTd><YTd>BOOP</YTd></YTr>
