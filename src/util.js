@@ -31,6 +31,9 @@ export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
 
 export const YThemeContext = React.createContext();
 
+/**
+ * Build a fully themable and overridable generic component for library export use.
+ */
 export const buildGenericThemableComponent = ({
     Tag = 'div',
     componentClassName = '',
@@ -39,61 +42,28 @@ export const buildGenericThemableComponent = ({
     propMutator = props => props,
     forwardRef = false
 }) => {
-    if(forwardRef) { // will hang if inlined... why?
-        const Component = (preProps) => {
-            const {
-                style = {},
-                className,
-    
-                children,
-                forwardedRef,
-                ...props
-            } = propMutator(preProps);
-
-            const {
-                defaultStyle = {},
-                defaultClassName = '',
-                excludeComponentDefaultClassName = false,
-            } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
-
-            return (
-                <Tag
-                    className={catClassName(
-                        (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
-                        defaultClassName,
-                        className
-                    )}
-                    style={Object.assign({}, defaultStyle, style)}
-                    {...props}
-                    ref={forwardedRef}
-                >
-                    {children}
-                </Tag>
-            );
-        }
-        Component.displayName = displayName;
-        return React.forwardRef((props, ref) => {
-            return <Component {...props} forwardedRef={ref} />;
-        });
-    }
-
     const Component = (preProps) => {
         const {
+            Tag: iTag,
             style = {},
             className,
 
             children,
+            YC_forwardedRef,
             ...props
         } = propMutator(preProps);
 
         const {
+            Tag: overrideTag,
             defaultStyle = {},
             defaultClassName = '',
             excludeComponentDefaultClassName = false,
         } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
-        
+
+        const CTag = iTag ? iTag : overrideTag ? overrideTag : Tag;
+
         return (
-            <Tag
+            <CTag
                 className={catClassName(
                     (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
                     defaultClassName,
@@ -101,14 +71,17 @@ export const buildGenericThemableComponent = ({
                 )}
                 style={Object.assign({}, defaultStyle, style)}
                 {...props}
+                {...(forwardRef ? {ref: YC_forwardedRef} : {})}
             >
                 {children}
-            </Tag>
+            </CTag>
         );
     }
     Component.displayName = displayName;
-    return Component;
 
+    return !forwardRef
+        ? Component
+        : React.forwardRef((props, ref) => {return <Component {...props} YC_forwardedRef={ref} />;});
 }
 
 //const camelCase = spacedString => spacedString.split(' ').map((word, i) => (i === 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.slice(1).toLowerCase()).join('');
