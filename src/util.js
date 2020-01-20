@@ -8,11 +8,12 @@ export const YThemeContext = React.createContext();
 export const buildGenericThemableComponent = ({
     // "Compile time config"
     Tag: componentTag = 'div',
-    //style: componentStyle, // USE A CLASS NAMED CSS INSTEAD PLEASE
+    style: componentStyle = {}, // USE A CLASS NAMED CSS INSTEAD PLEASE
     className: componentClassName = '',
+    //====================
 
     themeSelector: componentThemeSelector = () => { },
-    displayName: componentDisplayName ='YComponent',
+    displayName: componentDisplayName = 'YComponent',
     propMutator: componentPropMutator = props => props,
     forwardRef = false
 }) => {
@@ -23,6 +24,7 @@ export const buildGenericThemableComponent = ({
             Tag: themeTag,
             style: themeStyle = {},
             className: themeClassName,
+            //====================
 
             excludeComponentClassName = false,
         } = useMemo(() => componentThemeSelector(componentTheme|| {}), [componentTheme]);
@@ -32,6 +34,7 @@ export const buildGenericThemableComponent = ({
             Tag: propTag,
             style: propStyle = {},
             className: propClassName,
+            //====================
 
             children,
             YC_forwardedRef,
@@ -39,12 +42,12 @@ export const buildGenericThemableComponent = ({
         } = componentPropMutator(preProps);
 
         const CTag = propTag ? propTag : themeTag ? themeTag : componentTag;
+        const style = Object.assign({}, componentStyle, themeStyle, propStyle);
         const className = catClassName(
             (excludeComponentClassName ? '' : `y ${componentClassName}`),
             themeClassName,
             propClassName
         );
-        const style = Object.assign({}, themeStyle, propStyle);
 
         return (
             <CTag
