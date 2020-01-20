@@ -1,33 +1,4 @@
 import React, {useEffect, useContext} from 'react';
-export const catClassName = (...classNames) => {
-    return [].concat.apply([],
-        classNames.map((className = '') => Array.from(new Set(className.split(' ').filter(z => !!z))))
-    ).join(' ');
-};
-
-export const mergeRefs = (...refs) => (elem) => {
-    refs.forEach(ref => {
-        if(typeof ref === 'function') {
-            ref(elem);
-        } else {
-            ref.current = elem;
-        }
-    });
-}
-
-export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
-    const handleClick = e => {
-        if(nodeRef.current && !nodeRef.current.contains(e.target)) {
-            onOutsideClick(e);
-        }
-    }
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClick, false);
-        return () => {
-            document.removeEventListener('mousedown', handleClick, false);
-        }
-    })
-}
 
 export const YThemeContext = React.createContext();
 
@@ -35,6 +6,7 @@ export const YThemeContext = React.createContext();
  * Build a fully themable and overridable generic component for library export use.
  */
 export const buildGenericThemableComponent = ({
+    // "Compile time config"
     Tag = 'div',
     componentClassName = '',
     themeSelector = () => { },
@@ -43,8 +15,18 @@ export const buildGenericThemableComponent = ({
     forwardRef = false
 }) => {
     const Component = (preProps) => {
+        
         const {
-            Tag: iTag,
+            // "Theme" level config
+            Tag: overrideTag,
+            defaultStyle = {},
+            defaultClassName = '',
+            excludeComponentDefaultClassName = false,
+        } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
+
+        const {
+            // "Runtime" prop level config
+            Tag: propTag,
             style = {},
             className,
 
@@ -53,14 +35,7 @@ export const buildGenericThemableComponent = ({
             ...props
         } = propMutator(preProps);
 
-        const {
-            Tag: overrideTag,
-            defaultStyle = {},
-            defaultClassName = '',
-            excludeComponentDefaultClassName = false,
-        } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
-
-        const CTag = iTag ? iTag : overrideTag ? overrideTag : Tag;
+        const CTag = propTag ? propTag : overrideTag ? overrideTag : Tag;
 
         return (
             <CTag
@@ -84,19 +59,9 @@ export const buildGenericThemableComponent = ({
         : React.forwardRef((props, ref) => {return <Component {...props} YC_forwardedRef={ref} />;});
 }
 
-//const camelCase = spacedString => spacedString.split(' ').map((word, i) => (i === 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.slice(1).toLowerCase()).join('');
-const pascalCase = spacedString => spacedString.split(' ').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join('');
-const kebabCase = spacedString => {
-    
-    const result = spacedString.split(' ').map((word, i) => (i === 0 ? '' : '-') + word.toLowerCase()).join('');
-    if(result.includes('undefined')) {
-        debugger;
-    }
-    return result;
-}
-
 /**
- * Build a themable component with default class names and display names
+ * Build a themable component with default class names and display names.
+ * Basically buildGenericThemableComponent but for simple one liners.
  */
 export const buildSimpleGenericThemableComponent = (
     suffix,
@@ -146,7 +111,39 @@ export const getGenericThemableSubcomponentBuilder = (prefix, baseThemeSelector)
         }
 );
 
-export default {
-    catClassName,
-    buildGenericThemableComponent
+/**
+ * No dependency utilities.
+ */
+export const catClassName = (...classNames) => {
+    return [].concat.apply([],
+        classNames.map((className = '') => Array.from(new Set(className.split(' ').filter(z => !!z))))
+    ).join(' ');
+};
+
+export const mergeRefs = (...refs) => (elem) => {
+    refs.forEach(ref => {
+        if(typeof ref === 'function') {
+            ref(elem);
+        } else {
+            ref.current = elem;
+        }
+    });
 }
+
+export const useClickOutsideHandler = (nodeRef, onOutsideClick) => {
+    const handleClick = e => {
+        if(nodeRef.current && !nodeRef.current.contains(e.target)) {
+            onOutsideClick(e);
+        }
+    }
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClick, false);
+        return () => {
+            document.removeEventListener('mousedown', handleClick, false);
+        }
+    })
+}
+
+//const camelCase = spacedString => spacedString.split(' ').map((word, i) => (i === 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.slice(1).toLowerCase()).join('');
+const pascalCase = spacedString => spacedString.split(' ').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join('');
+const kebabCase = spacedString => spacedString.split(' ').map((word, i) => (i === 0 ? '' : '-') + word.toLowerCase()).join('');
