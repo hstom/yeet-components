@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useMemo} from 'react';
 
 export const YThemeContext = React.createContext();
 
@@ -7,44 +7,49 @@ export const YThemeContext = React.createContext();
  */
 export const buildGenericThemableComponent = ({
     // "Compile time config"
-    Tag = 'div',
-    componentClassName = '',
-    themeSelector = () => { },
-    displayName='YComponent',
-    propMutator = props => props,
+    Tag: componentTag = 'div',
+    //style: componentStyle, // USE A CLASS NAMED CSS INSTEAD PLEASE
+    className: componentClassName = '',
+
+    themeSelector: componentThemeSelector = () => { },
+    displayName: componentDisplayName ='YComponent',
+    propMutator: componentPropMutator = props => props,
     forwardRef = false
 }) => {
     const Component = (preProps) => {
-        
+        const componentTheme = useContext(YThemeContext);
         const {
             // "Theme" level config
-            Tag: overrideTag,
-            defaultStyle = {},
-            defaultClassName = '',
-            excludeComponentDefaultClassName = false,
-        } = themeSelector(useContext(YThemeContext) || {}); // TODO memo
+            Tag: themeTag,
+            style: themeStyle = {},
+            className: themeClassName,
+
+            excludeComponentClassName = false,
+        } = useMemo(() => componentThemeSelector(componentTheme|| {}), [componentTheme]);
 
         const {
             // "Runtime" prop level config
             Tag: propTag,
-            style = {},
-            className,
+            style: propStyle = {},
+            className: propClassName,
 
             children,
             YC_forwardedRef,
             ...props
-        } = propMutator(preProps);
+        } = componentPropMutator(preProps);
 
-        const CTag = propTag ? propTag : overrideTag ? overrideTag : Tag;
+        const CTag = propTag ? propTag : themeTag ? themeTag : componentTag;
+        const className = catClassName(
+            (excludeComponentClassName ? '' : `y ${componentClassName}`),
+            themeClassName,
+            propClassName
+        );
+        const style = Object.assign({}, themeStyle, propStyle);
 
         return (
             <CTag
-                className={catClassName(
-                    (excludeComponentDefaultClassName ? '' : `y ${componentClassName}`),
-                    defaultClassName,
-                    className
-                )}
-                style={Object.assign({}, defaultStyle, style)}
+                className={className}
+                style={style}
                 {...props}
                 {...(forwardRef ? {ref: YC_forwardedRef} : {})}
             >
@@ -52,7 +57,7 @@ export const buildGenericThemableComponent = ({
             </CTag>
         );
     }
-    Component.displayName = displayName;
+    Component.displayName = componentDisplayName;
 
     return !forwardRef
         ? Component
@@ -75,7 +80,7 @@ export const buildSimpleGenericThemableComponent = (
     } = {}
     ) => buildGenericThemableComponent({
         Tag,
-        componentClassName: `${kebabCase(suffix)}${extraClassNames.length > 0 ? ' ' : ''}${extraClassNames.join(' ')}`,
+        className: `${kebabCase(suffix)}${extraClassNames.length > 0 ? ' ' : ''}${extraClassNames.join(' ')}`,
         themeSelector,
         displayName,
         propMutator,

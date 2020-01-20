@@ -6,7 +6,7 @@ const getGenericButton = getGenericThemableSubcomponentBuilder('y button', globa
 
 export const YButton = getGenericButton(undefined, {
     Tag: 'button',
-    dismplayName: 'YButton'
+    displayName: 'YButton'
 });
 
 export const YButtonPrimary = getGenericButton(undefined, {
